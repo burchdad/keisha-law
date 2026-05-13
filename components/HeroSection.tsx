@@ -5,12 +5,17 @@ import Link from 'next/link';
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image Placeholder */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-primary">
-        {/* Placeholder for cinematic image */}
-        <div className="absolute inset-0 bg-black/40"></div>
-      </div>
+    <section
+      className="relative h-screen flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(15, 23, 32, 0.32), rgba(15, 23, 32, 0.32)), url('/hero-bg.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
