@@ -50,7 +50,7 @@ export default function Footer() {
             <div className="space-y-2 text-sm">
               <p>123 Main St<br />Los Angeles, CA 90043</p>
               <p>Phone: (323) 293-2321</p>
-              <p>Email: info@keishalaw.com</p>
+              <p>Email: info@krachallaw.com</p>
             </div>
             <div className="mt-4">
               <h5 className="font-semibold mb-2">Office Hours</h5>

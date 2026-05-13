@@ -234,10 +234,10 @@ export default function Contact() {
 
                   <p className="text-text/70">
                     <a
-                      href="mailto:info@keishalaw.com"
+                      href="mailto:info@krachallaw.com"
                       className="hover:text-secondary transition-colors"
                     >
-                      info@keishalaw.com
+                      info@krachallaw.com
                     </a>
                   </p>
                 </div>
