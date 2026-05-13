@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 interface PracticeAreaData {
   title: string;
@@ -296,8 +295,25 @@ export default function PracticeAreaPage({ params }: PageProps) {
   const data = practiceAreas[slug];
 
   if (!data) {
-    notFound();
-  }
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-warm-ivory px-4">
+      <div className="text-center">
+        <h1 className="text-4xl font-serif text-text mb-4">
+          Practice Area Not Found
+        </h1>
+        <p className="text-text/70 mb-6">
+          The practice area you are looking for could not be found.
+        </p>
+        <Link
+          href="/"
+          className="inline-block bg-secondary text-muted-whites px-6 py-3 rounded-md hover:bg-accent-gold hover:text-primary transition-colors"
+        >
+          Return Home
+        </Link>
+      </div>
+    </main>
+  );
+}
 
   return (
     <div className="min-h-screen">
