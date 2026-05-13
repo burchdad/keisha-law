@@ -63,10 +63,10 @@ export default function Header() {
 
           {/* Phone CTA */}
           <a
-            href="tel:323-293-2321"
+            href="tel:213-297-7642"
             className="bg-secondary text-muted-whites px-4 py-2 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
           >
-            (323) 293-2321
+            (213) 297-7642
           </a>
 
           {/* Mobile menu button */}

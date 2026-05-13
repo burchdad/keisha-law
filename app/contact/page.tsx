@@ -206,9 +206,9 @@ export default function Contact() {
                   </h3>
 
                   <p className="text-text/70">
-                    123 Main St
+                    3520 Long Beach Blvd., Suite 202
                     <br />
-                    Los Angeles, CA 90043
+                    Long Beach, CA 90807
                   </p>
                 </div>
 
@@ -219,11 +219,21 @@ export default function Contact() {
 
                   <p className="text-text/70">
                     <a
-                      href="tel:323-293-2321"
+                      href="tel:213-297-7642"
                       className="hover:text-secondary transition-colors"
                     >
-                      (323) 293-2321
+                      (213) 297-7642
                     </a>
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold text-text mb-2">
+                    Facsimile
+                  </h3>
+
+                  <p className="text-text/70">
+                    (562) 548-5078
                   </p>
                 </div>
 
