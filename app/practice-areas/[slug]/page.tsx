@@ -324,35 +324,35 @@ export default function PracticeAreaPage({ params }: PageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section
-        className="relative py-32"
-        style={{
-          backgroundImage:
-            `linear-gradient(rgba(15, 23, 32, 0.5), rgba(15, 23, 32, 0.5)), url('${data.heroImage}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'scroll',
-        }}
-      >
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="max-w-4xl mx-auto relative px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-4xl md:text-5xl font-serif font-light text-muted-whites mb-4">
-              {data.title}
-            </h1>
-            <p className="text-lg md:text-xl text-muted-whites/80 mb-2">
-              {data.subtitle}
-            </p>
-            <p className="text-lg text-muted-whites/70 max-w-2xl mx-auto">
-              {data.heroDescription}
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <section className="relative min-h-[620px] flex items-center overflow-hidden bg-primary">
+  <div
+    className="absolute inset-0 bg-center bg-no-repeat opacity-80"
+    style={{
+      backgroundImage: `url('${data.heroImage}')`,
+      backgroundSize: 'contain',
+    }}
+  />
+  <div className="absolute inset-0 bg-primary/65" />
+  <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-ivory via-warm-ivory/40 to-transparent" />
+
+  <div className="max-w-4xl mx-auto relative px-4 sm:px-6 lg:px-8 text-center z-10">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <h1 className="text-4xl md:text-5xl font-serif font-light text-muted-whites mb-4">
+        {data.title}
+      </h1>
+      <p className="text-lg md:text-xl text-muted-whites/80 mb-2">
+        {data.subtitle}
+      </p>
+      <p className="text-lg text-muted-whites/70 max-w-2xl mx-auto">
+        {data.heroDescription}
+      </p>
+    </motion.div>
+  </div>
+</section>
 
       {/* Floating Trust Card */}
       <FloatingTrustCard message={data.emotionalPositioning} />
