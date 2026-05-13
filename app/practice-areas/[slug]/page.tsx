@@ -331,7 +331,7 @@ export default function PracticeAreaPage({ params }: PageProps) {
             `linear-gradient(rgba(15, 23, 32, 0.5), rgba(15, 23, 32, 0.5)), url('${data.heroImage}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: 'scroll',
         }}
       >
         <div className="absolute inset-0 bg-black/30" />
@@ -358,7 +358,7 @@ export default function PracticeAreaPage({ params }: PageProps) {
       <FloatingTrustCard message={data.emotionalPositioning} />
 
       {/* Educational Content */}
-      <section className="py-20 bg-warm-ivory">
+      <section className="pt-8 pb-20 bg-warm-ivory">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -527,20 +527,24 @@ export default function PracticeAreaPage({ params }: PageProps) {
 
 function FloatingTrustCard({ message }: { message: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-      className="relative -mt-16 mb-16 mx-auto max-w-2xl bg-secondary shadow-2xl rounded-lg p-8 text-center border border-accent-gold/20"
-    >
-      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-        <div className="w-8 h-8 bg-secondary border border-accent-gold/20 rotate-45"></div>
-      </div>
-      <p className="text-lg md:text-xl text-muted-whites leading-relaxed">
-        {message}
-      </p>
-      <div className="mt-4 w-16 h-1 bg-accent-gold mx-auto rounded-full"></div>
-    </motion.div>
+    <section className="relative bg-warm-ivory pt-1 pb-16 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 20 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="relative -mt-16 mx-auto max-w-2xl bg-secondary shadow-2xl rounded-lg p-8 text-center border border-accent-gold/20 z-10"
+      >
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+          <div className="w-8 h-8 bg-secondary border-l border-t border-accent-gold/20 rotate-45"></div>
+        </div>
+
+        <p className="text-lg md:text-xl text-muted-whites leading-relaxed">
+          {message}
+        </p>
+
+        <div className="mt-4 w-16 h-1 bg-accent-gold mx-auto rounded-full"></div>
+      </motion.div>
+    </section>
   );
 }
