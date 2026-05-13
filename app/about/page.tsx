@@ -7,18 +7,8 @@ export default function About() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section
-        className="relative py-32"
-        style={{
-          backgroundImage:
-            `linear-gradient(rgba(15, 23, 32, 0.5), rgba(15, 23, 32, 0.5)), url('/background-image-2.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }}
-      >
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="max-w-4xl mx-auto relative px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-32 bg-primary">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
