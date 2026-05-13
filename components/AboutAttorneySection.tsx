@@ -5,8 +5,18 @@ import Link from 'next/link';
 
 export default function AboutAttorneySection() {
   return (
-    <section className="py-20 bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      className="relative py-20"
+      style={{
+        backgroundImage:
+          `linear-gradient(rgba(15, 23, 32, 0.6), rgba(15, 23, 32, 0.6)), url('/background-image-2.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Portrait */}
           <motion.div
