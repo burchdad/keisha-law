@@ -335,7 +335,7 @@ export default function PracticeAreaPage({ params }: PageProps) {
 
   <div className="absolute inset-0 bg-primary/60" />
 
-  <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-warm-ivory via-warm-ivory/70 to-transparent" />
+  <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-warm-ivory via-warm-ivory/45 to-transparent" />
 
   <div className="max-w-4xl mx-auto relative px-4 sm:px-6 lg:px-8 text-center z-10">
     <motion.div
