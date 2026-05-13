@@ -326,14 +326,16 @@ export default function PracticeAreaPage({ params }: PageProps) {
       {/* Hero Section */}
       <section className="relative min-h-[620px] flex items-center overflow-hidden bg-primary">
   <div
-    className="absolute inset-0 bg-center bg-no-repeat opacity-80"
+    className="absolute inset-0 bg-top bg-no-repeat opacity-80"
     style={{
       backgroundImage: `url('${data.heroImage}')`,
-      backgroundSize: 'contain',
+      backgroundSize: '100% auto',
     }}
   />
-  <div className="absolute inset-0 bg-primary/65" />
-  <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-ivory via-warm-ivory/40 to-transparent" />
+
+  <div className="absolute inset-0 bg-primary/60" />
+
+  <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-warm-ivory via-warm-ivory/70 to-transparent" />
 
   <div className="max-w-4xl mx-auto relative px-4 sm:px-6 lg:px-8 text-center z-10">
     <motion.div
@@ -344,9 +346,11 @@ export default function PracticeAreaPage({ params }: PageProps) {
       <h1 className="text-4xl md:text-5xl font-serif font-light text-muted-whites mb-4">
         {data.title}
       </h1>
+
       <p className="text-lg md:text-xl text-muted-whites/80 mb-2">
         {data.subtitle}
       </p>
+
       <p className="text-lg text-muted-whites/70 max-w-2xl mx-auto">
         {data.heroDescription}
       </p>
