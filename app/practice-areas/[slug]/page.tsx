@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -287,11 +288,16 @@ const practiceAreas: Record<string, PracticeAreaData> = {
 };
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }> | { slug: string };
 }
 
 export default function PracticeAreaPage({ params }: PageProps) {
-  const { slug } = params;
+  const resolvedParams =
+    typeof (params as Promise<{ slug: string }>).then === 'function'
+      ? use(params as Promise<{ slug: string }>)
+      : (params as { slug: string });
+
+  const slug = resolvedParams.slug;
   const data = practiceAreas[slug];
 
   if (!data) {
