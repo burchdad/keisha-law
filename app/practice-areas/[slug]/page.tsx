@@ -3,12 +3,13 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { useParams } from 'next/navigation';
 
 interface PracticeAreaData {
   title: string;
   subtitle: string;
   heroDescription: string;
+  heroImage: string;
+  heroImageAlt: string;
   emotionalPositioning: string;
   educationalContent: {
     title: string;
@@ -29,6 +30,8 @@ const practiceAreas: Record<string, PracticeAreaData> = {
   'conservatorships': {
     title: 'Conservatorships',
     subtitle: 'Protecting Vulnerable Family Members',
+    heroImage: '/conservatorship.png',
+    heroImageAlt: 'Conservatorship consultation with family and attorney',
     heroDescription: 'Compassionate guidance through conservatorship proceedings to ensure the safety and well-being of loved ones who need protection.',
     emotionalPositioning: 'When a family member can no longer make decisions for themselves, establishing a conservatorship provides the legal framework to ensure their care and protection. This process, while necessary, can be emotionally challenging. We guide you through it with sensitivity and expertise.',
     educationalContent: {
@@ -70,6 +73,8 @@ const practiceAreas: Record<string, PracticeAreaData> = {
   'guardianships': {
     title: 'Guardianships',
     subtitle: 'Safeguarding Family Futures',
+    heroImage: '/guardianship.png',
+    heroImageAlt: 'Attorney guiding family through guardianship paperwork',
     heroDescription: 'Supportive legal assistance for establishing guardianship arrangements that protect children and ensure their well-being.',
     emotionalPositioning: 'Creating a guardianship means stepping in to provide stability and protection for a child during uncertain times. Whether due to parental incapacity, adoption, or other circumstances, we help establish these arrangements with care and legal precision.',
     educationalContent: {
@@ -111,6 +116,8 @@ const practiceAreas: Record<string, PracticeAreaData> = {
   'estate-planning': {
     title: 'Estate Planning',
     subtitle: 'Securing Your Legacy',
+    heroImage: '/estate-planning.png',
+    heroImageAlt: 'Couple reviewing estate planning documents with attorney',
     heroDescription: 'Peace of mind through comprehensive estate planning that protects your family and preserves your wishes for the future.',
     emotionalPositioning: 'Estate planning is about more than documents—it\'s about ensuring your loved ones are protected and your wishes are honored. We help you create a comprehensive plan that provides security and peace of mind for you and your family.',
     educationalContent: {
@@ -152,6 +159,8 @@ const practiceAreas: Record<string, PracticeAreaData> = {
   'probate-matters': {
     title: 'Probate Matters',
     subtitle: 'Clarity During Transitions',
+    heroImage: '/probate-matters.png',
+    heroImageAlt: 'Probate attorney reviewing estate paperwork with clients',
     heroDescription: 'Guidance through probate proceedings that brings clarity and resolution during difficult times of loss and transition.',
     emotionalPositioning: 'Losing a loved one is never easy, and dealing with probate matters can add stress during an already difficult time. We provide compassionate, clear guidance to help you navigate this process with confidence.',
     educationalContent: {
@@ -193,6 +202,8 @@ const practiceAreas: Record<string, PracticeAreaData> = {
   'name-changes': {
     title: 'Name Changes',
     subtitle: 'New Beginnings, Fresh Start',
+    heroImage: '/name-changes.png',
+    heroImageAlt: 'New name change paperwork and family support',
     heroDescription: 'Empowering support for legal name changes that mark new chapters in life with dignity and legal precision.',
     emotionalPositioning: 'A name change represents a significant life transition—whether for personal reasons, marriage, divorce, or other circumstances. We handle this process with the sensitivity and respect it deserves.',
     educationalContent: {
@@ -234,6 +245,8 @@ const practiceAreas: Record<string, PracticeAreaData> = {
   'limited-family-law': {
     title: 'Limited Family Law',
     subtitle: 'Calm Resolution, Peaceful Solutions',
+    heroImage: '/limited-family-law.png',
+    heroImageAlt: 'Family law consultation with compassionate attorney',
     heroDescription: 'Guidance through family law matters with a focus on resolution, understanding, and protecting what matters most.',
     emotionalPositioning: 'Family conflicts can be among life\'s most challenging experiences. We approach these matters with compassion, seeking resolutions that prioritize family relationships and long-term well-being.',
     educationalContent: {
@@ -289,8 +302,18 @@ export default function PracticeAreaPage({ params }: PageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-32 bg-primary">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section
+        className="relative py-32"
+        style={{
+          backgroundImage:
+            `linear-gradient(rgba(15, 23, 32, 0.5), rgba(15, 23, 32, 0.5)), url('${data.heroImage}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="max-w-4xl mx-auto relative px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
