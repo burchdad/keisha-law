@@ -7,7 +7,7 @@ const steps = [
     number: '01',
     title: 'Initial Consultation',
     description:
-      'We begin with a compassionate conversation to understand your unique situation and legal needs.',
+      'We begin with a conversation to understand your unique situation and legal needs.',
   },
   {
     number: '02',

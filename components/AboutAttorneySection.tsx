@@ -52,7 +52,7 @@ export default function AboutAttorneySection() {
 
             <div className="space-y-4 text-muted-whites/90 leading-relaxed">
               <p>
-                With over 25 years of dedicated service to the Los Angeles community, Attorney Keisha Law
+                With over 25 years of dedicated service to the Los Angeles County, Attorney Keisha Law
                 has built her practice on the foundation of compassion, integrity, and unwavering commitment
                 to her clients' well-being.
               </p>
