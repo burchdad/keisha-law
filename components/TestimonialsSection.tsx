@@ -55,7 +55,7 @@ export default function TestimonialsSection() {
                 </svg>
               </div>
               <blockquote className="text-muted-whites/90 mb-4 leading-relaxed italic">
-                "{testimonial.quote}"
+                &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
               <div className="text-accent-gold font-medium">
                 {testimonial.author}

@@ -39,8 +39,8 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg md:text-xl text-muted-whites/90 mb-8 max-w-2xl mx-auto leading-relaxed"
         >
-          Drawing from nearly 30 years of experience in the legal field, Keisha Rachal provides 
-          compassionate, trusted guidance for conservatorships, probate, estate planning, and 
+          Drawing from 30+ years of experience in the legal field, Keisha Rachal provides 
+          trusted guidance for conservatorships, probate, estate planning, and 
           family matters.
         </motion.p>
 

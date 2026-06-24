@@ -17,7 +17,7 @@ export default function ContactCTASection() {
             Ready to Take the Next Step?
           </h2>
           <p className="text-lg text-text/80 mb-8 max-w-2xl mx-auto">
-            Contact our office for a consultation. We're here to listen and provide the guidance you need.
+            Contact our office for a consultation. We&apos;re here to listen and provide the guidance you need.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

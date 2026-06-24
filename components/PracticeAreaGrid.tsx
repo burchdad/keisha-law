@@ -64,7 +64,7 @@ export default function PracticeAreaGrid() {
             Legal Services Tailored to Your Needs
           </h2>
           <p className="text-lg text-text/80 max-w-2xl mx-auto">
-            Professional legal guidance for life's most important moments, delivered with compassion and expertise.
+            Professional legal guidance for life&apos;s most important moments, delivered with expertise.
           </p>
         </motion.div>
 

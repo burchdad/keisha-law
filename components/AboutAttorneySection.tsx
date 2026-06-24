@@ -18,7 +18,6 @@ export default function AboutAttorneySection() {
       <div className="absolute inset-0 bg-black/20" />
       <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Portrait */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -27,19 +26,17 @@ export default function AboutAttorneySection() {
             className="relative"
           >
             <div className="aspect-square bg-gradient-to-br from-secondary to-primary rounded-lg overflow-hidden shadow-2xl">
-              {/* Placeholder for attorney portrait */}
               <div className="w-full h-full flex items-center justify-center">
-                <div className="text-accent-gold text-6xl opacity-50">
-                  👩‍⚖️
+                <div className="w-32 h-32 rounded-full border border-accent-gold/40 bg-primary/50 flex items-center justify-center text-accent-gold text-5xl font-serif">
+                  KL
                 </div>
               </div>
             </div>
             <div className="absolute -bottom-6 -right-6 bg-accent-gold text-primary px-4 py-2 rounded-md font-semibold">
-              25+ Years Experience
+              30+ Years Experience
             </div>
           </motion.div>
 
-          {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -52,22 +49,15 @@ export default function AboutAttorneySection() {
 
             <div className="space-y-4 text-muted-whites/90 leading-relaxed">
               <p>
-                With over 25 years of dedicated service to the Los Angeles County, Attorney Keisha Law
-                has built her practice on the foundation of compassion, integrity, and unwavering commitment
-                to her clients' well-being.
+                With 30+ years of dedicated service to the Los Angeles County, Attorney Keisha Law has built her practice on the foundation of integrity and unwavering commitment to her clients&apos; well-being.
               </p>
 
               <p>
-                Understanding that legal matters often arise during life's most challenging moments,
-                she approaches each case with the empathy and professionalism that families deserve.
-                Her boutique practice focuses on providing personalized attention and clear guidance
-                through complex legal situations.
+                Understanding that legal matters often arise during life&apos;s most challenging moments, she approaches each case with the empathy and professionalism that families deserve. Her boutique practice focuses on providing personalized attention and clear guidance through complex legal situations.
               </p>
 
               <p>
-                "My philosophy is simple: every client deserves to feel heard, understood, and supported
-                throughout their legal journey. I believe in building lasting relationships based on
-                trust, transparency, and genuine care for the people I serve."
+                &ldquo;My philosophy is simple: every client deserves to feel heard, understood, and supported throughout their legal journey. I believe in building lasting relationships based on trust, transparency, and genuine care for the people I serve.&rdquo;
               </p>
             </div>
 

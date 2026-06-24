@@ -15,7 +15,7 @@ export default function FloatingTrustCard() {
         <div className="w-8 h-8 bg-secondary border border-accent-gold/20 rotate-45"></div>
       </div>
       <p className="text-lg md:text-xl text-muted-whites leading-relaxed">
-        "Helping Families Navigate Difficult Legal Matters With Compassion, Clarity, And Experience."
+        &ldquo;Helping Families Navigate Difficult Legal Matters With Compassion, Clarity, And Experience.&rdquo;
       </p>
       <div className="mt-4 w-16 h-1 bg-accent-gold mx-auto rounded-full"></div>
     </motion.div>

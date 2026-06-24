@@ -48,14 +48,14 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Information</h4>
             <div className="space-y-2 text-sm">
-              <p>3520 Long Beach Blvd., Suite 202<br />Long Beach, CA 90807</p>
+              <p>3520 Long Beach Blvd., Suite 204<br />Long Beach, CA 90807</p>
               <p>Phone: (213) 297-7642</p>
               <p>Fax: (562) 548-5078</p>
               <p>Email: info@krachallaw.com</p>
             </div>
             <div className="mt-4">
               <h5 className="font-semibold mb-2">Office Hours</h5>
-              <p className="text-sm">Monday - Friday: 9AM - 6PM<br />Saturday: By Appointment<br />Sunday: Closed</p>
+              <p className="text-sm">Monday - Friday: 9AM - 5PM<br />Saturday: By Appointment<br />Sunday: Closed</p>
             </div>
           </div>
         </div>

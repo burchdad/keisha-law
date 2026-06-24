@@ -14,7 +14,7 @@ export default function ReassuranceBanner() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-muted-whites mb-8 leading-tight">
-            You Don't Have To Navigate This Alone
+            You Don&apos;t Have To Navigate This Alone
           </h2>
           <p className="text-lg md:text-xl text-muted-whites/80 mb-8 max-w-2xl mx-auto">
             When life brings legal challenges, you deserve guidance that combines expertise with genuine compassion.

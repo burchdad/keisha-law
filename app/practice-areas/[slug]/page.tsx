@@ -488,7 +488,7 @@ export default function PracticeAreaPage({ params }: PageProps) {
               Ready to Get Started?
             </h2>
             <p className="text-lg text-text/80 mb-8 max-w-2xl mx-auto">
-              Contact our office for compassionate guidance through your {data.title.toLowerCase()} matter.
+              Contact our office for guidance through your {data.title.toLowerCase()} matter.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

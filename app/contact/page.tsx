@@ -56,7 +56,7 @@ export default function Contact() {
           'Something went wrong while sending your message. Please try again.'
         );
       }
-    } catch (error) {
+    } catch {
       setSubmitError(
         'Something went wrong while sending your message. Please try again.'
       );
@@ -91,7 +91,7 @@ export default function Contact() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-whites/80 max-w-2xl mx-auto">
-              We&apos;re here to listen and provide the compassionate guidance
+              We&apos;re here to listen and provide the guidance
               you need during difficult times.
             </p>
           </motion.div>
@@ -176,8 +176,7 @@ export default function Contact() {
               </h3>
 
               <p className="text-text/70">
-                Schedule your consultation and begin receiving compassionate
-                legal support.
+                Schedule your consultation and begin receiving legal support.
               </p>
             </motion.div>
           </div>
@@ -206,7 +205,7 @@ export default function Contact() {
                   </h3>
 
                   <p className="text-text/70">
-                    3520 Long Beach Blvd., Suite 202
+                    3520 Long Beach Blvd., Suite 204
                     <br />
                     Long Beach, CA 90807
                   </p>
@@ -258,7 +257,7 @@ export default function Contact() {
                   </h3>
 
                   <div className="text-text/70 space-y-1">
-                    <p>Monday - Friday: 9AM - 6PM</p>
+                    <p>Monday - Friday: 9AM - 5PM</p>
                     <p>Saturday: By Appointment</p>
                     <p>Sunday: Closed</p>
                   </div>
