@@ -17,31 +17,13 @@ export default function AboutAttorneySection() {
     >
       <div className="absolute inset-0 bg-black/20" />
       <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="aspect-square bg-gradient-to-br from-secondary to-primary rounded-lg overflow-hidden shadow-2xl">
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="w-32 h-32 rounded-full border border-accent-gold/40 bg-primary/50 flex items-center justify-center text-accent-gold text-5xl font-serif">
-                  KL
-                </div>
-              </div>
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-accent-gold text-primary px-4 py-2 rounded-md font-semibold">
-              30+ Years Experience
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            className="text-center"
           >
             <h2 className="text-3xl md:text-4xl font-serif font-light text-muted-whites mb-6">
               Meet Attorney Keisha Law

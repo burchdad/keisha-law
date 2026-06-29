@@ -57,6 +57,9 @@ export default function Footer() {
               <h5 className="font-semibold mb-2">Office Hours</h5>
               <p className="text-sm">Monday - Friday: 9AM - 5PM<br />Saturday: By Appointment<br />Sunday: Closed</p>
             </div>
+            <p className="mt-4 text-sm text-muted-whites/80">
+              Notarial services are also offered upon appointment.
+            </p>
           </div>
         </div>
 

@@ -25,27 +25,13 @@ export default function About() {
 
       <section className="py-20 bg-warm-ivory">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <div className="aspect-square bg-gradient-to-br from-secondary to-primary rounded-lg overflow-hidden shadow-2xl">
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-28 h-28 rounded-full border border-accent-gold/40 bg-primary/50 flex items-center justify-center text-accent-gold text-4xl font-serif">
-                    KL
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
+          <div className="mb-16">
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
+              className="max-w-3xl mx-auto"
             >
               <h2 className="text-3xl font-serif font-light text-text mb-6">
                 A Commitment to Legal Service

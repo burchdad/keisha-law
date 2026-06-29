@@ -110,6 +110,31 @@ export default function PracticeAreaGrid() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-10 bg-primary text-muted-whites rounded-lg p-8 border border-accent-gold/20"
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h3 className="text-2xl font-serif font-light mb-3">
+                Notary Public Services
+              </h3>
+              <p className="text-muted-whites/80 leading-relaxed">
+                Notarial services are also offered upon appointment.
+              </p>
+            </div>
+            <Link
+              href="/contact"
+              className="inline-flex justify-center bg-accent-gold text-primary px-6 py-3 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
+            >
+              Request Appointment
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

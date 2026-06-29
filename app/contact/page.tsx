@@ -262,6 +262,16 @@ export default function Contact() {
                     <p>Sunday: Closed</p>
                   </div>
                 </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold text-text mb-2">
+                    Notary Public
+                  </h3>
+
+                  <p className="text-text/70">
+                    Notarial services are also offered upon appointment.
+                  </p>
+                </div>
               </div>
             </motion.div>
 
@@ -381,6 +391,9 @@ export default function Contact() {
                       <option value="name-changes">Name Changes</option>
                       <option value="limited-family-law">
                         Limited Family Law
+                      </option>
+                      <option value="notarial-services">
+                        Notarial Services
                       </option>
                     </select>
                   </div>
