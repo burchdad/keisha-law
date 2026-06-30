@@ -19,6 +19,9 @@ const navLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
+const clientPortalUrl =
+  'https://secure.lawpay.com/pages/rachallawfirmapc/operating';
+
 export default function Header() {
   const [isPracticeMenuOpen, setIsPracticeMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -125,6 +128,15 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <a
+              href={clientPortalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:inline-flex bg-accent-gold text-primary px-4 py-2 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
+            >
+              Client Portal Login
+            </a>
+
+            <a
               href="tel:213-297-7642"
               className="hidden sm:inline-flex bg-secondary text-muted-whites px-4 py-2 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
             >
@@ -202,6 +214,14 @@ export default function Header() {
               className="mt-3 flex justify-center bg-secondary text-muted-whites px-4 py-3 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
             >
               (213) 297-7642
+            </a>
+            <a
+              href={clientPortalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-center bg-accent-gold text-primary px-4 py-3 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
+            >
+              Client Portal Login
             </a>
           </div>
         </nav>

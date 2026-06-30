@@ -26,20 +26,16 @@ export default function AboutAttorneySection() {
             className="text-center"
           >
             <h2 className="text-3xl md:text-4xl font-serif font-light text-muted-whites mb-6">
-              Meet Attorney Keisha Law
+              Meet Keisha Rachal
             </h2>
 
             <div className="space-y-4 text-muted-whites/90 leading-relaxed">
               <p>
-                With 30+ years of dedicated service to the Los Angeles County, Attorney Keisha Law has built her practice on the foundation of integrity and unwavering commitment to her clients&apos; well-being.
+                Keisha Rachal brings more than three decades in family law, probate and estate planning as a paralegal to her practice. After a long career as a paralegal she now serves Los Angeles County clients as an attorney &mdash; pairing deep, hands-on familiarity with the system and the confidence that comes from years inside it.
               </p>
 
               <p>
-                Understanding that legal matters often arise during life&apos;s most challenging moments, she approaches each case with the empathy and professionalism that families deserve. Her boutique practice focuses on providing personalized attention and clear guidance through complex legal situations.
-              </p>
-
-              <p>
-                &ldquo;My philosophy is simple: every client deserves to feel heard, understood, and supported throughout their legal journey. I believe in building lasting relationships based on trust, transparency, and genuine care for the people I serve.&rdquo;
+                Because legal matters often surface during life&apos;s hardest moments, she meets each case with empathy and professionalism. Her boutique firm is built on personalized attention and clear guidance through complex situations.
               </p>
             </div>
 
