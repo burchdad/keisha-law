@@ -19,8 +19,10 @@ const navLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
-const clientPortalUrl =
+const paymentUrl =
   'https://secure.lawpay.com/pages/rachallawfirmapc/operating';
+const clientPortalUrl =
+  'https://auth.mycase.com/login_sessions/launchpad?client_id=tCEM8hNY7GaC2c8P';
 
 export default function Header() {
   const [isPracticeMenuOpen, setIsPracticeMenuOpen] = useState(false);
@@ -128,10 +130,19 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <a
+              href={paymentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden xl:inline-flex bg-accent-gold text-primary px-4 py-2 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
+            >
+              Payment Link
+            </a>
+
+            <a
               href={clientPortalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:inline-flex bg-accent-gold text-primary px-4 py-2 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
+              className="hidden xl:inline-flex border border-accent-gold text-accent-gold px-4 py-2 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
             >
               Client Portal Login
             </a>
@@ -216,10 +227,18 @@ export default function Header() {
               (213) 297-7642
             </a>
             <a
-              href={clientPortalUrl}
+              href={paymentUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center bg-accent-gold text-primary px-4 py-3 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
+            >
+              Payment Link
+            </a>
+            <a
+              href={clientPortalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-center border border-accent-gold text-accent-gold px-4 py-3 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
             >
               Client Portal Login
             </a>

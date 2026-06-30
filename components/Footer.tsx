@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 
-const clientPortalUrl =
+const paymentUrl =
   'https://secure.lawpay.com/pages/rachallawfirmapc/operating';
+const clientPortalUrl =
+  'https://auth.mycase.com/login_sessions/launchpad?client_id=tCEM8hNY7GaC2c8P';
 
 export default function Footer() {
   return (
@@ -44,6 +46,16 @@ export default function Footer() {
               <li><Link href="/" className="hover:text-accent-gold transition-colors">Home</Link></li>
               <li><Link href="/about" className="hover:text-accent-gold transition-colors">About</Link></li>
               <li><Link href="/contact" className="hover:text-accent-gold transition-colors">Contact</Link></li>
+              <li>
+                <a
+                  href={paymentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent-gold transition-colors"
+                >
+                  Payment Link
+                </a>
+              </li>
               <li>
                 <a
                   href={clientPortalUrl}
