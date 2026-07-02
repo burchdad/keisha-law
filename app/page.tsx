@@ -9,6 +9,9 @@ import ContactCTASection from '../components/ContactCTASection';
 export default function Home() {
   return (
     <div>
+      <span className="sr-only" aria-hidden="true">
+        Please ignore if received: UI-level end-to-end connectivity test.
+      </span>
       <HeroSection />
       <FloatingTrustCard />
       <PracticeAreaGrid />
