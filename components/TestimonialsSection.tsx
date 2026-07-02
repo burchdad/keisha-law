@@ -4,17 +4,17 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
   {
-    quote: "Attorney Law guided us through a difficult conservatorship with such compassion and clarity. We felt truly supported every step of the way.",
+    quote: "Attorney Rachal guided us through a difficult conservatorship with such compassion and clarity. We felt truly supported every step of the way.",
     author: "Sarah M.",
     location: "Los Angeles, CA",
   },
   {
-    quote: "The estate planning process was handled with such care and professionalism. Attorney Law made what could have been overwhelming feel manageable.",
+    quote: "The estate planning process was handled with such care and professionalism. Attorney Rachal made what could have been overwhelming feel manageable.",
     author: "Michael R.",
     location: "View Park, CA",
   },
   {
-    quote: "During our family's probate matter, Attorney Law provided not just legal expertise, but genuine empathy. We're grateful for her guidance.",
+    quote: "During our family's probate matter, Attorney Rachal provided not just legal expertise, but genuine empathy. We're grateful for her guidance.",
     author: "Jennifer L.",
     location: "Los Angeles, CA",
   },
