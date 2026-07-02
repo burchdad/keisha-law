@@ -63,6 +63,12 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+            <Link
+              href="/admin"
+              className="mt-5 inline-flex justify-center rounded-md border border-accent-gold px-4 py-2 text-sm font-medium text-accent-gold transition-colors hover:bg-accent-gold hover:text-primary"
+            >
+              Admin Dashboard
+            </Link>
           </div>
 
           {/* Contact Info */}
