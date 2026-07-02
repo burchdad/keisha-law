@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 
 const navItems = [
@@ -16,6 +16,17 @@ const navItems = [
 
 export default function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
+  const handleSignOut = async () => {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    router.replace('/admin/login');
+    router.refresh();
+  };
 
   return (
     <main className="min-h-screen bg-black text-muted-whites">
@@ -68,6 +79,13 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             >
               New Support Ticket
             </Link>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="rounded-md border border-white/15 px-4 py-3 text-sm font-bold text-muted-whites/80 transition hover:border-accent-gold hover:text-accent-gold"
+            >
+              Sign Out
+            </button>
           </div>
         </aside>
 
