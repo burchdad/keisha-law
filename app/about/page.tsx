@@ -14,7 +14,7 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl font-serif font-light text-muted-whites mb-6">
-              About Attorney Keisha Law
+              About Attorney Keisha Rachal
             </h1>
             <p className="text-lg md:text-xl text-muted-whites/80 max-w-2xl mx-auto">
               Dedicated to providing legal guidance with 30+ years of experience serving the Los Angeles community.

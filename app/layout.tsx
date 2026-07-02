@@ -16,7 +16,7 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Keisha Law - Boutique Legal Services",
+  title: "Rachal Law Firm APC - Boutique Legal Services",
   description: "Helping families navigate difficult legal matters with compassion, clarity, and experience.",
 };
 

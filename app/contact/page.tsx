@@ -32,7 +32,7 @@ export default function Contact() {
         },
         body: JSON.stringify({
           ...formData,
-          _subject: 'New Keisha Law Website Inquiry',
+          _subject: 'New Rachal Law Firm APC Website Inquiry',
         }),
       });
 
@@ -303,7 +303,7 @@ export default function Contact() {
                   <input
                     type="hidden"
                     name="_subject"
-                    value="New Keisha Law Website Inquiry"
+                    value="New Rachal Law Firm APC Website Inquiry"
                   />
 
                   <div>

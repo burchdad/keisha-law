@@ -22,7 +22,7 @@ const navLinks = [
 const paymentUrl =
   'https://secure.lawpay.com/pages/rachallawfirmapc/operating';
 const clientPortalUrl =
-  'https://auth.mycase.com/login_sessions/launchpad?client_id=tCEM8hNY7GaC2c8P';
+  'https://www.mycase.com/';
 
 export default function Header() {
   const [isPracticeMenuOpen, setIsPracticeMenuOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function Header() {
             onClick={closeMenus}
             className="text-2xl font-serif font-semibold text-muted-whites hover:text-accent-gold transition-colors"
           >
-            Keisha Law
+            Rachal Law Firm APC
           </Link>
 
           <nav className="hidden md:flex space-x-8" aria-label="Primary">

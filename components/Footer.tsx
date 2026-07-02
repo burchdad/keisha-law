@@ -5,7 +5,7 @@ import Link from 'next/link';
 const paymentUrl =
   'https://secure.lawpay.com/pages/rachallawfirmapc/operating';
 const clientPortalUrl =
-  'https://auth.mycase.com/login_sessions/launchpad?client_id=tCEM8hNY7GaC2c8P';
+  'https://www.mycase.com/';
 
 export default function Footer() {
   return (
@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="md:col-span-1">
-            <h3 className="text-xl font-serif font-semibold text-accent-gold mb-4">Keisha Law</h3>
+            <h3 className="text-xl font-serif font-semibold text-accent-gold mb-4">Rachal Law Firm APC</h3>
             <p className="text-sm text-muted-whites/80 mb-4">
               Helping families navigate difficult legal matters with compassion, clarity, and experience.
             </p>
@@ -89,7 +89,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-accent-gold/20 mt-8 pt-8 text-center text-sm text-muted-whites/60">
-          <p>&copy; 2026 Keisha Law. All rights reserved. | Attorney Advertising | This website is for informational purposes only and does not constitute legal advice.</p>
+          <p>&copy; 2026 Rachal Law Firm APC. All rights reserved. | Attorney Advertising | This website is for informational purposes only and does not constitute legal advice.</p>
         </div>
       </div>
     </footer>
