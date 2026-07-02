@@ -17,7 +17,7 @@ const cormorantGaramond = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Rachal Law Firm APC - Boutique Legal Services",
-  description: "Helping families navigate difficult legal matters with compassion, clarity, and experience.",
+  description: "Helping families navigate difficult legal matters with clarity and experience.",
 };
 
 export default function RootLayout({

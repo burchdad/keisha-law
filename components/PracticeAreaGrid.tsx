@@ -3,51 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-const practiceAreas = [
-  {
-    title: 'Conservatorships',
-    description: 'Compassionate guidance through conservatorship proceedings to protect vulnerable family members.',
-    href: '/practice-areas/conservatorships',
-    imgSrc: '/conservatorship.png',
-    imgAlt: 'Conservatorship legal guidance image',
-  },
-  {
-    title: 'Guardianships',
-    description: 'Supportive legal assistance for establishing guardianship arrangements with care and expertise.',
-    href: '/practice-areas/guardianships',
-    imgSrc: '/guardianship.png',
-    imgAlt: 'Guardianship legal guidance image',
-  },
-  {
-    title: 'Estate Planning',
-    description: 'Peace of mind through comprehensive estate planning and legacy protection services.',
-    href: '/practice-areas/estate-planning',
-    imgSrc: '/estate-planning.png',
-    imgAlt: 'Estate planning legal image',
-  },
-  {
-    title: 'Probate Matters',
-    description: 'Clarity and guidance during probate proceedings to ensure smooth estate administration.',
-    href: '/practice-areas/probate-matters',
-    imgSrc: '/probate-matters.png',
-    imgAlt: 'Probate matters legal image',
-  },
-  {
-    title: 'Name Changes',
-    description: 'Empowering support for legal name changes with sensitivity and professionalism.',
-    href: '/practice-areas/name-changes',
-    imgSrc: '/name-changes.png',
-    imgAlt: 'Name change legal image',
-  },
-  {
-    title: 'Limited Family Law',
-    description: 'Calm resolution of family law matters with guidance focused on positive outcomes.',
-    href: '/practice-areas/limited-family-law',
-    imgSrc: '/limited-family-law.png',
-    imgAlt: 'Family law guidance image',
-  },
-];
+import { contactInfo, practiceAreas, siteCopy } from '../lib/siteContent';
 
 export default function PracticeAreaGrid() {
   return (
@@ -61,10 +17,10 @@ export default function PracticeAreaGrid() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-serif font-light text-text mb-4">
-            Legal Services Tailored to Your Needs
+            {siteCopy.servicesIntro.heading}
           </h2>
           <p className="text-lg text-text/80 max-w-2xl mx-auto">
-            Professional legal guidance for life&apos;s most important moments, delivered with expertise.
+            {siteCopy.servicesIntro.body}
           </p>
         </motion.div>
 
@@ -124,7 +80,7 @@ export default function PracticeAreaGrid() {
                 Notary Public Services
               </h3>
               <p className="text-muted-whites/80 leading-relaxed">
-                Notarial services are also offered upon appointment.
+                {contactInfo.notaryNote}
               </p>
             </div>
             <Link

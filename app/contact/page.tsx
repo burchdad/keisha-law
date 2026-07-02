@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { contactInfo, siteCopy } from '../../lib/siteContent';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -87,12 +88,11 @@ export default function Contact() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl font-serif font-light text-muted-whites mb-6">
-              Contact Our Office
+              {siteCopy.contactPage.heroHeading}
             </h1>
 
             <p className="text-lg md:text-xl text-muted-whites/80 max-w-2xl mx-auto">
-              We&apos;re here to listen and provide the guidance
-              you need during difficult times.
+              {siteCopy.contactPage.heroBody}
             </p>
           </motion.div>
         </div>
@@ -205,9 +205,9 @@ export default function Contact() {
                   </h3>
 
                   <p className="text-text/70">
-                    3520 Long Beach Blvd., Suite 204
+                    {contactInfo.addressLine1}
                     <br />
-                    Long Beach, CA 90807
+                    {contactInfo.addressLine2}
                   </p>
                 </div>
 
@@ -218,10 +218,10 @@ export default function Contact() {
 
                   <p className="text-text/70">
                     <a
-                      href="tel:213-297-7642"
+                      href={contactInfo.phoneHref}
                       className="hover:text-secondary transition-colors"
                     >
-                      (213) 297-7642
+                      {contactInfo.phoneDisplay}
                     </a>
                   </p>
                 </div>
@@ -232,7 +232,7 @@ export default function Contact() {
                   </h3>
 
                   <p className="text-text/70">
-                    (562) 548-5078
+                    {contactInfo.fax}
                   </p>
                 </div>
 
@@ -243,10 +243,10 @@ export default function Contact() {
 
                   <p className="text-text/70">
                     <a
-                      href="mailto:info@krachallaw.com"
+                      href={contactInfo.emailHref}
                       className="hover:text-secondary transition-colors"
                     >
-                      info@krachallaw.com
+                      {contactInfo.email}
                     </a>
                   </p>
                 </div>
@@ -257,9 +257,9 @@ export default function Contact() {
                   </h3>
 
                   <div className="text-text/70 space-y-1">
-                    <p>Monday - Friday: 9AM - 5PM</p>
-                    <p>Saturday: By Appointment</p>
-                    <p>Sunday: Closed</p>
+                    <p>{contactInfo.weekdayHours}</p>
+                    <p>{contactInfo.saturdayHours}</p>
+                    <p>{contactInfo.sundayHours}</p>
                   </div>
                 </div>
 
@@ -269,7 +269,7 @@ export default function Contact() {
                   </h3>
 
                   <p className="text-text/70">
-                    Notarial services are also offered upon appointment.
+                    {contactInfo.notaryNote}
                   </p>
                 </div>
               </div>

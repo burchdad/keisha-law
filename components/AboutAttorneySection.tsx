@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { siteCopy } from '../lib/siteContent';
 
 export default function AboutAttorneySection() {
   return (
@@ -26,17 +27,13 @@ export default function AboutAttorneySection() {
             className="text-center"
           >
             <h2 className="text-3xl md:text-4xl font-serif font-light text-muted-whites mb-6">
-              Meet Keisha Rachal
+              {siteCopy.homeAbout.heading}
             </h2>
 
             <div className="space-y-4 text-muted-whites/90 leading-relaxed">
-              <p>
-                Keisha Rachal brings more than three decades in family law, probate and estate planning as a paralegal to her practice. After a long career as a paralegal she now serves Los Angeles County clients as an attorney &mdash; pairing deep, hands-on familiarity with the system and the confidence that comes from years inside it.
-              </p>
-
-              <p>
-                Because legal matters often surface during life&apos;s hardest moments, she meets each case with empathy and professionalism. Her boutique firm is built on personalized attention and clear guidance through complex situations.
-              </p>
+              {siteCopy.homeAbout.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
 
             <div className="mt-8">
