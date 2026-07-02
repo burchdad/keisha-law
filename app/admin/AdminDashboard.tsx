@@ -1,481 +1,526 @@
 'use client';
 
 import Link from 'next/link';
-import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 import { contactInfo, siteCopy } from '../../lib/siteContent';
 
-type EditableContent = typeof siteCopy & {
-  contact: typeof contactInfo;
-  support: {
-    helperName: string;
-    missionControlEndpoint: string;
-    supportSummary: string;
-  };
+type Ticket = {
+  id: string;
+  title: string;
+  type: string;
+  priority: string;
+  section: string;
+  status: 'Sent' | 'Draft' | 'Retry Needed';
+  createdAt: string;
+  summary: string;
 };
 
-type TabKey = 'overview' | 'home' | 'about' | 'contact' | 'support' | 'export';
-
-const initialContent: EditableContent = {
-  ...siteCopy,
-  contact: contactInfo,
-  support: {
-    helperName: 'Rachal Law Website Helper',
-    missionControlEndpoint: 'GHOST_MISSION_CONTROL_WEBHOOK_URL',
-    supportSummary:
-      'Website support helper agent for routing client text edits and website support requests into Ghost Mission Control.',
-  },
+type TicketForm = {
+  clientSite: string;
+  section: string;
+  requesterName: string;
+  requesterEmail: string;
+  requestType: string;
+  priority: string;
+  summary: string;
+  details: string;
+  acknowledged: boolean;
 };
 
-const tabs: { key: TabKey; label: string; helper: string }[] = [
-  { key: 'overview', label: 'Overview', helper: 'Status and next steps' },
-  { key: 'home', label: 'Home Page', helper: 'Hero and meet section' },
-  { key: 'about', label: 'About Page', helper: 'Bio and philosophy copy' },
-  { key: 'contact', label: 'Contact Details', helper: 'Office information' },
-  { key: 'support', label: 'Support Helper', helper: 'Ghost handoff setup' },
-  { key: 'export', label: 'Export Payload', helper: 'Review raw JSON' },
+const contentPayload = {
+  siteCopy,
+  contactInfo,
+};
+
+const sidebarItems = [
+  'Dashboard Overview',
+  'Content Updates',
+  'Website Support',
+  'Contact Submissions',
+  'Client Portal',
+  'Payment Link',
+  'Global Settings',
 ];
+
+const initialTickets: Ticket[] = [
+  {
+    id: 'KL-INTAKE-001',
+    title: 'Update attorney bio wording',
+    type: 'TEXT_UPDATE',
+    priority: 'NORMAL',
+    section: 'About Page',
+    status: 'Sent',
+    createdAt: 'Latest preview',
+    summary: 'Clarify paralegal experience before attorney admission.',
+  },
+  {
+    id: 'KL-INTAKE-002',
+    title: 'Add notary appointment note',
+    type: 'TEXT_UPDATE',
+    priority: 'NORMAL',
+    section: 'Contact Page',
+    status: 'Sent',
+    createdAt: 'Testing branch',
+    summary: 'Add notarial services are offered by appointment.',
+  },
+  {
+    id: 'KL-INTAKE-003',
+    title: 'Prepare Ghost helper connection',
+    type: 'INTEGRATION',
+    priority: 'HIGH',
+    section: 'Website Support',
+    status: 'Draft',
+    createdAt: 'Needs webhook',
+    summary: 'Connect dashboard requests to Ghost Mission Control.',
+  },
+];
+
+const initialForm: TicketForm = {
+  clientSite: 'Rachal Law Firm APC',
+  section: '/admin or describe page section',
+  requesterName: '',
+  requesterEmail: contactInfo.email,
+  requestType: 'Text update',
+  priority: 'Normal',
+  summary: '',
+  details: '',
+  acknowledged: false,
+};
 
 function Field({
   label,
   value,
   onChange,
-  rows = 3,
+  placeholder,
+  type = 'text',
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  rows?: number;
+  placeholder?: string;
+  type?: string;
 }) {
   return (
     <label className="block">
-      <span className="text-sm font-medium text-muted-whites/80">{label}</span>
-      <textarea
+      <span className="text-xs font-bold uppercase tracking-wide text-muted-whites/55">
+        {label}
+      </span>
+      <input
+        type={type}
         value={value}
-        rows={rows}
+        placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="mt-2 w-full resize-y rounded-md border border-accent-gold/20 bg-primary/70 px-4 py-3 text-sm leading-relaxed text-muted-whites outline-none transition focus:border-accent-gold"
+        className="mt-2 h-11 w-full rounded-md border border-muted-whites/10 bg-black/30 px-3 text-sm font-medium text-muted-whites outline-none transition placeholder:text-muted-whites/35 focus:border-accent-gold"
       />
     </label>
   );
 }
 
-function Panel({
-  title,
-  description,
-  children,
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
 }: {
-  title: string;
-  description: string;
-  children: ReactNode;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
 }) {
   return (
-    <section className="rounded-lg border border-accent-gold/20 bg-secondary/35">
-      <div className="border-b border-accent-gold/15 px-6 py-5">
-        <h2 className="font-serif text-2xl font-light">{title}</h2>
-        <p className="mt-1 text-sm text-muted-whites/65">{description}</p>
-      </div>
-      <div className="p-6">{children}</div>
-    </section>
+    <label className="block">
+      <span className="text-xs font-bold uppercase tracking-wide text-muted-whites/55">
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="mt-2 h-11 w-full rounded-md border border-muted-whites/10 bg-black/30 px-3 text-sm font-medium text-muted-whites outline-none transition focus:border-accent-gold"
+      >
+        {options.map((option) => (
+          <option key={option} value={option} className="bg-primary">
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  note,
+}: {
+  label: string;
+  value: string;
+  note: string;
+}) {
+  return (
+    <div className="rounded-lg border border-muted-whites/10 bg-black/25 p-5">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted-whites/45">
+        {label}
+      </p>
+      <p className="mt-3 text-4xl font-black text-muted-whites">{value}</p>
+      <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-accent-gold">
+        {note}
+      </p>
+    </div>
   );
 }
 
 export default function AdminDashboard() {
-  const [content, setContent] = useState(initialContent);
-  const [activeTab, setActiveTab] = useState<TabKey>('overview');
+  const [activeItem, setActiveItem] = useState('Website Support');
+  const [form, setForm] = useState<TicketForm>(initialForm);
+  const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
   const [status, setStatus] = useState('');
-  const payload = useMemo(() => JSON.stringify(content, null, 2), [content]);
+  const payload = useMemo(
+    () =>
+      JSON.stringify(
+        {
+          ticket: form,
+          currentContent: contentPayload,
+        },
+        null,
+        2
+      ),
+    [form]
+  );
 
-  const updatePath = (path: string[], value: string) => {
-    setContent((current) => {
-      const copy = structuredClone(current);
-      let target: Record<string, unknown> = copy;
-
-      path.slice(0, -1).forEach((key) => {
-        target = target[key] as Record<string, unknown>;
-      });
-
-      target[path[path.length - 1]] = value;
-      return copy;
-    });
+  const updateForm = <Key extends keyof TicketForm>(
+    key: Key,
+    value: TicketForm[Key]
+  ) => {
+    setForm((current) => ({
+      ...current,
+      [key]: value,
+    }));
   };
 
-  const submitChangeRequest = async () => {
-    setStatus('Sending update request...');
+  const submitTicket = async () => {
+    if (!form.acknowledged) {
+      setStatus('Please confirm this creates a support request before sending.');
+      return;
+    }
 
-    const response = await fetch('/api/admin/content', {
-      method: 'PATCH',
+    setStatus('Sending ticket to website helper...');
+
+    const response = await fetch('/api/web-helper/support', {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: payload,
     });
 
     const result = await response.json().catch(() => null);
+    const ticketId = `KL-INTAKE-${Date.now()}`;
 
-    if (response.ok) {
-      setStatus(
-        result?.message ?? 'Update request sent to the website support workflow.'
-      );
-      return;
-    }
+    setTickets((current) => [
+      {
+        id: ticketId,
+        title: form.summary || 'Website update request',
+        type: form.requestType.toUpperCase().replaceAll(' ', '_'),
+        priority: form.priority.toUpperCase(),
+        section: form.section,
+        status: response.ok ? 'Sent' : 'Retry Needed',
+        createdAt: 'Just now',
+        summary: form.details || 'No extra details provided.',
+      },
+      ...current,
+    ]);
 
     setStatus(
       result?.message ??
-        'Content exported below. Connect Ghost Mission Control to accept live edits.'
+        'Ticket captured. Configure Ghost Mission Control to forward requests.'
     );
   };
 
   return (
-    <main className="min-h-screen bg-primary text-muted-whites">
-      <div className="grid min-h-screen lg:grid-cols-[280px_minmax(0,1fr)]">
-        <aside className="border-b border-accent-gold/15 bg-primary/95 px-4 py-6 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r">
-          <div className="mb-6 px-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-accent-gold">
-              Website Admin
-            </p>
-            <h1 className="mt-2 font-serif text-2xl font-light">
-              Content Dashboard
-            </h1>
-            <p className="mt-2 text-sm text-muted-whites/60">
-              Manage site copy and support requests.
-            </p>
+    <main className="min-h-screen bg-black text-muted-whites">
+      <div className="grid min-h-screen lg:grid-cols-[260px_minmax(0,1fr)]">
+        <aside className="border-b border-white/10 bg-black px-5 py-5 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r">
+          <div className="mb-7 rounded-lg border border-white/10 bg-primary/60 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent-gold/15 text-accent-gold">
+                RL
+              </div>
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-gold">
+                  Admin
+                </p>
+                <p className="text-xs text-muted-whites/55">Website updates</p>
+              </div>
+            </div>
           </div>
 
-          <nav className="grid gap-2" aria-label="Admin sections">
-            {tabs.map((tab) => {
-              const isActive = tab.key === activeTab;
+          <nav className="space-y-1" aria-label="Admin sections">
+            {sidebarItems.map((item) => {
+              const isActive = item === activeItem;
 
               return (
                 <button
-                  key={tab.key}
+                  key={item}
                   type="button"
-                  onClick={() => setActiveTab(tab.key)}
-                  className={`rounded-md px-3 py-3 text-left transition-colors ${
+                  onClick={() => setActiveItem(item)}
+                  className={`w-full rounded-md px-3 py-3 text-left text-sm font-bold transition ${
                     isActive
                       ? 'bg-accent-gold text-primary'
-                      : 'text-muted-whites/80 hover:bg-secondary/60 hover:text-muted-whites'
+                      : 'text-muted-whites/70 hover:bg-white/5 hover:text-muted-whites'
                   }`}
                 >
-                  <span className="block text-sm font-semibold">{tab.label}</span>
-                  <span
-                    className={`mt-1 block text-xs ${
-                      isActive ? 'text-primary/75' : 'text-muted-whites/50'
-                    }`}
-                  >
-                    {tab.helper}
-                  </span>
+                  {item}
                 </button>
               );
             })}
           </nav>
 
-          <div className="mt-6 rounded-lg border border-accent-gold/20 bg-secondary/30 p-4 text-sm text-muted-whites/70">
-            <p className="font-semibold text-muted-whites">Preview tools</p>
-            <div className="mt-3 grid gap-2">
-              <Link
-                href="/"
-                className="rounded-md border border-accent-gold/20 px-3 py-2 text-center transition hover:border-accent-gold hover:text-accent-gold"
-              >
-                View Site
-              </Link>
-              <button
-                type="button"
-                onClick={() => setActiveTab('export')}
-                className="rounded-md border border-accent-gold/20 px-3 py-2 transition hover:border-accent-gold hover:text-accent-gold"
-              >
-                Review JSON
-              </button>
-            </div>
+          <div className="mt-8 grid gap-3">
+            <Link
+              href="/"
+              className="rounded-md border border-white/15 px-4 py-3 text-center text-sm font-bold text-muted-whites/80 transition hover:border-accent-gold hover:text-accent-gold"
+            >
+              View Website
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setForm(initialForm);
+                setStatus('');
+              }}
+              className="rounded-md border border-white/15 px-4 py-3 text-sm font-bold text-muted-whites/80 transition hover:border-accent-gold hover:text-accent-gold"
+            >
+              Reset Form
+            </button>
           </div>
         </aside>
 
-        <section className="min-w-0 px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mb-6 flex flex-col gap-4 rounded-lg border border-accent-gold/20 bg-secondary/30 px-5 py-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-accent-gold">
-                Draft Mode
-              </p>
-              <p className="mt-1 text-sm text-muted-whites/70">
-                Edits are staged here before they are sent to the support workflow.
-              </p>
+        <section className="min-w-0 px-4 py-5 sm:px-6 lg:px-8">
+          <header className="rounded-lg border border-white/10 bg-black/40 p-5">
+            <p className="text-xs font-black uppercase tracking-[0.26em] text-accent-gold">
+              Website Update Center
+            </p>
+            <div className="mt-2 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <h1 className="text-3xl font-black tracking-tight text-muted-whites">
+                  Website Support
+                </h1>
+                <p className="mt-2 text-sm text-muted-whites/60">
+                  Create structured work tickets for Ghost Mission Control and
+                  the web helper agent.
+                </p>
+              </div>
+              <div className="rounded-md border border-accent-gold/35 px-4 py-2 text-sm font-bold uppercase tracking-wide text-accent-gold">
+                Testing Branch Active
+              </div>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setContent(initialContent);
-                  setStatus('');
-                }}
-                className="rounded-md border border-accent-gold px-4 py-2 text-sm font-medium text-accent-gold transition hover:bg-accent-gold hover:text-primary"
-              >
-                Reset Draft
-              </button>
-              <button
-                type="button"
-                onClick={submitChangeRequest}
-                className="rounded-md bg-accent-gold px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent-gold/90"
-              >
-                Send Change Request
-              </button>
-            </div>
+          </header>
+
+          <div className="mt-5 grid gap-4 lg:grid-cols-3">
+            <StatCard
+              label="Recent Tickets"
+              value={String(tickets.length)}
+              note="Captured here"
+            />
+            <StatCard
+              label="Sent To Agents"
+              value={String(tickets.filter((ticket) => ticket.status === 'Sent').length)}
+              note="Ready for review"
+            />
+            <StatCard label="Webhook" value="Draft" note="Ghost handoff pending" />
           </div>
 
           {status && (
-            <div className="mb-6 rounded-md border border-accent-gold/30 bg-secondary/40 px-4 py-3 text-sm">
+            <div className="mt-5 rounded-md border border-accent-gold/30 bg-accent-gold/10 px-4 py-3 text-sm font-semibold text-accent-gold">
               {status}
             </div>
           )}
 
-          {activeTab === 'overview' && (
-            <div className="grid gap-6 xl:grid-cols-3">
-              <Panel
-                title="Dashboard Overview"
-                description="Quick access to the areas the client can update."
-              >
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {tabs
-                    .filter((tab) => tab.key !== 'overview')
-                    .map((tab) => (
-                      <button
-                        key={tab.key}
-                        type="button"
-                        onClick={() => setActiveTab(tab.key)}
-                        className="rounded-md border border-accent-gold/20 bg-primary/50 p-4 text-left transition hover:border-accent-gold"
-                      >
-                        <span className="block font-semibold">{tab.label}</span>
-                        <span className="mt-1 block text-sm text-muted-whites/60">
-                          {tab.helper}
-                        </span>
-                      </button>
-                    ))}
-                </div>
-              </Panel>
+          <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1.18fr)_minmax(380px,0.82fr)]">
+            <section className="rounded-lg border border-white/10 bg-black/35">
+              <div className="border-b border-white/10 px-5 py-5">
+                <h2 className="text-sm font-black uppercase tracking-wide">
+                  Website Helper Bot
+                </h2>
+                <p className="mt-2 text-sm text-muted-whites/55">
+                  Collect the request, attach context, and create a review-gated
+                  work ticket.
+                </p>
+              </div>
 
-              <Panel
-                title="Website Support"
-                description="Ghost Mission Control handoff status."
-              >
-                <div className="space-y-4 text-sm text-muted-whites/70">
-                  <p>
-                    Requests are prepared for the website helper workflow. Add
-                    the webhook URL in Vercel as
-                    <span className="font-mono text-accent-gold">
-                      {' '}
-                      GHOST_MISSION_CONTROL_WEBHOOK_URL
-                    </span>
-                    .
+              <div className="space-y-5 p-5">
+                <div className="rounded-md border border-cyan-400/25 bg-cyan-400/10 p-4">
+                  <p className="text-sm font-bold text-cyan-100">
+                    Website helper intake
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('support')}
-                    className="rounded-md bg-accent-gold px-4 py-2 font-medium text-primary"
+                  <p className="mt-2 text-sm text-cyan-100/75">
+                    No changes are published automatically. Work stays on a
+                    testing branch until approved and merged.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Field
+                    label="Client / Site"
+                    value={form.clientSite}
+                    onChange={(value) => updateForm('clientSite', value)}
+                  />
+                  <Field
+                    label="Page or Section"
+                    value={form.section}
+                    onChange={(value) => updateForm('section', value)}
+                    placeholder="/services or homepage hero"
+                  />
+                  <Field
+                    label="Requester Name"
+                    value={form.requesterName}
+                    onChange={(value) => updateForm('requesterName', value)}
+                  />
+                  <Field
+                    label="Requester Email"
+                    type="email"
+                    value={form.requesterEmail}
+                    onChange={(value) => updateForm('requesterEmail', value)}
+                  />
+                  <SelectField
+                    label="Request Type"
+                    value={form.requestType}
+                    onChange={(value) => updateForm('requestType', value)}
+                    options={[
+                      'Text update',
+                      'Image update',
+                      'New section',
+                      'Bug',
+                      'Integration',
+                    ]}
+                  />
+                  <SelectField
+                    label="Priority"
+                    value={form.priority}
+                    onChange={(value) => updateForm('priority', value)}
+                    options={['Normal', 'High', 'Urgent']}
+                  />
+                </div>
+
+                <Field
+                  label="Short Summary"
+                  value={form.summary}
+                  onChange={(value) => updateForm('summary', value)}
+                  placeholder="Replace services page hero image"
+                />
+
+                <label className="block">
+                  <span className="text-xs font-bold uppercase tracking-wide text-muted-whites/55">
+                    Details for the Web Helper
+                  </span>
+                  <textarea
+                    value={form.details}
+                    rows={8}
+                    onChange={(event) => updateForm('details', event.target.value)}
+                    placeholder="Describe what should change, where it appears, and any exact copy/assets to use."
+                    className="mt-2 w-full resize-y rounded-md border border-muted-whites/10 bg-black/30 px-3 py-3 text-sm leading-relaxed text-muted-whites outline-none transition placeholder:text-muted-whites/35 focus:border-accent-gold"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="text-xs font-bold uppercase tracking-wide text-muted-whites/55">
+                    Screenshots or Files
+                  </span>
+                  <div className="mt-2 rounded-md border border-dashed border-muted-whites/15 bg-black/25 px-3 py-3">
+                    <input
+                      type="file"
+                      multiple
+                      className="block w-full text-sm text-muted-whites/70 file:mr-4 file:rounded-md file:border-0 file:bg-muted-whites file:px-4 file:py-2 file:text-sm file:font-bold file:text-primary"
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-muted-whites/45">
+                    Optional. File upload is staged visually in this preview and
+                    will be wired to storage with the helper agent.
+                  </p>
+                </label>
+
+                <label className="flex gap-3 rounded-md border border-white/10 bg-black/25 p-4 text-sm text-muted-whites/75">
+                  <input
+                    type="checkbox"
+                    checked={form.acknowledged}
+                    onChange={(event) =>
+                      updateForm('acknowledged', event.target.checked)
+                    }
+                    className="mt-1 h-4 w-4 accent-accent-gold"
+                  />
+                  <span>
+                    I understand this creates a support request only. Website
+                    changes require review and approval before publishing.
+                  </span>
+                </label>
+
+                <button
+                  type="button"
+                  onClick={submitTicket}
+                  className="w-full rounded-md bg-accent-gold px-5 py-4 text-sm font-black uppercase tracking-wide text-primary transition hover:bg-accent-gold/90"
+                >
+                  Send to Website Helper
+                </button>
+              </div>
+            </section>
+
+            <section className="rounded-lg border border-white/10 bg-black/35">
+              <div className="border-b border-white/10 px-5 py-5">
+                <h2 className="text-sm font-black uppercase tracking-wide">
+                  Recent Support Tickets
+                </h2>
+                <p className="mt-2 text-sm text-muted-whites/55">
+                  Latest requests captured from this dashboard.
+                </p>
+              </div>
+
+              <div className="max-h-[760px] space-y-4 overflow-auto p-5">
+                {tickets.map((ticket) => (
+                  <article
+                    key={ticket.id}
+                    className="rounded-lg border border-white/10 bg-black/25 p-4"
                   >
-                    Configure Helper
-                  </button>
-                </div>
-              </Panel>
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="text-sm font-black uppercase tracking-wide">
+                          {ticket.title}
+                        </h3>
+                        <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-muted-whites/45">
+                          {ticket.type} / {ticket.priority}
+                        </p>
+                      </div>
+                      <span
+                        className={`rounded-md px-3 py-1 text-xs font-black uppercase ${
+                          ticket.status === 'Sent'
+                            ? 'bg-cyan-400/15 text-cyan-100'
+                            : ticket.status === 'Retry Needed'
+                              ? 'bg-red-500/15 text-red-200'
+                              : 'bg-accent-gold/15 text-accent-gold'
+                        }`}
+                      >
+                        {ticket.status}
+                      </span>
+                    </div>
+                    <p className="mt-4 text-sm text-muted-whites/65">
+                      {ticket.summary}
+                    </p>
+                    <p className="mt-4 text-xs text-muted-whites/40">
+                      {ticket.section} / {ticket.createdAt}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          </div>
 
-              <Panel
-                title="Current Draft"
-                description="Raw change payload preview."
-              >
-                <pre className="max-h-72 overflow-auto rounded-md bg-primary/80 p-4 text-xs leading-relaxed text-muted-whites/75">
-                  {payload}
-                </pre>
-              </Panel>
+          <section className="mt-5 rounded-lg border border-white/10 bg-black/35">
+            <div className="border-b border-white/10 px-5 py-4">
+              <h2 className="text-sm font-black uppercase tracking-wide">
+                Current Handoff Payload
+              </h2>
             </div>
-          )}
-
-          {activeTab === 'home' && (
-            <Panel
-              title="Home Page"
-              description="Edit hero copy, the floating trust card, and the meet section."
-            >
-              <div className="grid gap-5 xl:grid-cols-2">
-                <Field
-                  label="Hero headline line 1"
-                  rows={2}
-                  value={content.hero.headlineLine1}
-                  onChange={(value) =>
-                    updatePath(['hero', 'headlineLine1'], value)
-                  }
-                />
-                <Field
-                  label="Hero headline line 2"
-                  rows={2}
-                  value={content.hero.headlineLine2}
-                  onChange={(value) =>
-                    updatePath(['hero', 'headlineLine2'], value)
-                  }
-                />
-                <div className="xl:col-span-2">
-                  <Field
-                    label="Hero body"
-                    value={content.hero.body}
-                    onChange={(value) => updatePath(['hero', 'body'], value)}
-                  />
-                </div>
-                <div className="xl:col-span-2">
-                  <Field
-                    label="Floating trust card quote"
-                    value={content.trustCard.quote}
-                    onChange={(value) =>
-                      updatePath(['trustCard', 'quote'], value)
-                    }
-                  />
-                </div>
-                <div className="xl:col-span-2">
-                  <Field
-                    label="Meet section paragraph 1"
-                    rows={5}
-                    value={content.homeAbout.paragraphs[0]}
-                    onChange={(value) =>
-                      updatePath(['homeAbout', 'paragraphs', '0'], value)
-                    }
-                  />
-                </div>
-                <div className="xl:col-span-2">
-                  <Field
-                    label="Meet section paragraph 2"
-                    rows={4}
-                    value={content.homeAbout.paragraphs[1]}
-                    onChange={(value) =>
-                      updatePath(['homeAbout', 'paragraphs', '1'], value)
-                    }
-                  />
-                </div>
-              </div>
-            </Panel>
-          )}
-
-          {activeTab === 'about' && (
-            <Panel
-              title="About Page"
-              description="Edit the attorney profile and supporting about-page copy."
-            >
-              <div className="grid gap-5">
-                <Field
-                  label="About hero body"
-                  value={content.aboutPage.heroBody}
-                  onChange={(value) =>
-                    updatePath(['aboutPage', 'heroBody'], value)
-                  }
-                />
-                <Field
-                  label="Story paragraph 1"
-                  rows={5}
-                  value={content.aboutPage.storyParagraphs[0]}
-                  onChange={(value) =>
-                    updatePath(['aboutPage', 'storyParagraphs', '0'], value)
-                  }
-                />
-                <Field
-                  label="Story paragraph 2"
-                  rows={4}
-                  value={content.aboutPage.storyParagraphs[1]}
-                  onChange={(value) =>
-                    updatePath(['aboutPage', 'storyParagraphs', '1'], value)
-                  }
-                />
-              </div>
-            </Panel>
-          )}
-
-          {activeTab === 'contact' && (
-            <Panel
-              title="Contact Details"
-              description="Update firm information, office hours, and notary messaging."
-            >
-              <div className="grid gap-5 md:grid-cols-2">
-                <Field
-                  label="Firm name"
-                  rows={2}
-                  value={content.contact.firmName}
-                  onChange={(value) =>
-                    updatePath(['contact', 'firmName'], value)
-                  }
-                />
-                <Field
-                  label="Phone"
-                  rows={2}
-                  value={content.contact.phoneDisplay}
-                  onChange={(value) =>
-                    updatePath(['contact', 'phoneDisplay'], value)
-                  }
-                />
-                <Field
-                  label="Address line 1"
-                  rows={2}
-                  value={content.contact.addressLine1}
-                  onChange={(value) =>
-                    updatePath(['contact', 'addressLine1'], value)
-                  }
-                />
-                <Field
-                  label="Address line 2"
-                  rows={2}
-                  value={content.contact.addressLine2}
-                  onChange={(value) =>
-                    updatePath(['contact', 'addressLine2'], value)
-                  }
-                />
-                <div className="md:col-span-2">
-                  <Field
-                    label="Notary note"
-                    rows={2}
-                    value={content.contact.notaryNote}
-                    onChange={(value) =>
-                      updatePath(['contact', 'notaryNote'], value)
-                    }
-                  />
-                </div>
-              </div>
-            </Panel>
-          )}
-
-          {activeTab === 'support' && (
-            <Panel
-              title="Support Helper"
-              description="Configure how the website helper routes requests into Ghost Mission Control."
-            >
-              <div className="grid gap-5">
-                <Field
-                  label="Helper agent name"
-                  rows={2}
-                  value={content.support.helperName}
-                  onChange={(value) =>
-                    updatePath(['support', 'helperName'], value)
-                  }
-                />
-                <Field
-                  label="Ghost Mission Control endpoint env"
-                  rows={2}
-                  value={content.support.missionControlEndpoint}
-                  onChange={(value) =>
-                    updatePath(['support', 'missionControlEndpoint'], value)
-                  }
-                />
-                <Field
-                  label="Support summary"
-                  rows={4}
-                  value={content.support.supportSummary}
-                  onChange={(value) =>
-                    updatePath(['support', 'supportSummary'], value)
-                  }
-                />
-              </div>
-            </Panel>
-          )}
-
-          {activeTab === 'export' && (
-            <Panel
-              title="Export Payload"
-              description="Review the exact JSON payload that will be sent with change requests."
-            >
-              <pre className="max-h-[calc(100vh-18rem)] overflow-auto rounded-md bg-primary/80 p-5 text-xs leading-relaxed text-muted-whites/80">
-                {payload}
-              </pre>
-            </Panel>
-          )}
+            <pre className="max-h-72 overflow-auto p-5 text-xs leading-relaxed text-muted-whites/65">
+              {payload}
+            </pre>
+          </section>
         </section>
       </div>
     </main>
