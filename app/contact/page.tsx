@@ -321,7 +321,7 @@ export default function Contact() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
+                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md bg-white text-text placeholder:text-text/45 focus:outline-none focus:ring-2 focus:ring-secondary"
                     />
                   </div>
 
@@ -340,7 +340,7 @@ export default function Contact() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
+                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md bg-white text-text placeholder:text-text/45 focus:outline-none focus:ring-2 focus:ring-secondary"
                     />
                   </div>
 
@@ -358,7 +358,7 @@ export default function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
+                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md bg-white text-text placeholder:text-text/45 focus:outline-none focus:ring-2 focus:ring-secondary"
                     />
                   </div>
 
@@ -375,7 +375,7 @@ export default function Contact() {
                       name="practiceArea"
                       value={formData.practiceArea}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
+                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md bg-white text-text focus:outline-none focus:ring-2 focus:ring-secondary"
                     >
                       <option value="">Select a practice area</option>
                       <option value="conservatorships">
@@ -414,7 +414,7 @@ export default function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Please describe your legal matter..."
-                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white resize-none"
+                      className="w-full px-4 py-3 border border-accent-gold/20 rounded-md bg-white text-text placeholder:text-text/45 focus:outline-none focus:ring-2 focus:ring-secondary resize-none"
                     />
                   </div>
 
