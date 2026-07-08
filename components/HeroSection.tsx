@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEditableSiteContent } from '../lib/editableSiteContent';
 
@@ -10,15 +11,16 @@ export default function HeroSection() {
   return (
     <section
       className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(15, 23, 32, 0.32), rgba(15, 23, 32, 0.32)), url('/hero-bg.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        backgroundRepeat: 'no-repeat',
-      }}
     >
+      <Image
+        src="/hero-bg.png"
+        alt="Scales of justice and legal books"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-primary/35" />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

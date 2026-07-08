@@ -2,6 +2,7 @@
 
 import { use } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface PracticeAreaData {
@@ -325,12 +326,13 @@ export default function PracticeAreaPage({ params }: PageProps) {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-[620px] flex items-center overflow-hidden bg-primary">
-  <div
-    className="absolute inset-0 bg-top bg-no-repeat opacity-80"
-    style={{
-      backgroundImage: `url('${data.heroImage}')`,
-      backgroundSize: '100% auto',
-    }}
+  <Image
+    src={data.heroImage}
+    alt={data.heroImageAlt}
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover object-top opacity-80"
   />
 
   <div className="absolute inset-0 bg-primary/60" />
