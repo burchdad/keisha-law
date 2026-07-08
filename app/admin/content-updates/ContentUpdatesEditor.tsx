@@ -5,7 +5,9 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   contentDraftStorageKey,
   notifyEditableContentUpdated,
+  publishedOverridesPath,
 } from '../../../lib/editableSiteContent';
+import type { SiteOverrides } from '../../../lib/editableContentTypes';
 import { siteCopy } from '../../../lib/siteContent';
 
 type ContentDraft = {
@@ -111,25 +113,45 @@ function Section({
 export default function ContentUpdatesEditor() {
   const [draft, setDraft] = useState(initialDraft);
   const [status, setStatus] = useState('');
+  const [isPublishing, setIsPublishing] = useState(false);
   const payload = useMemo(() => JSON.stringify(draft, null, 2), [draft]);
 
   useEffect(() => {
-    const storedDraft = window.localStorage.getItem(contentDraftStorageKey);
+    const loadDraft = async () => {
+      let publishedDraft: Partial<ContentDraft> = {};
+      const storedDraft = window.localStorage.getItem(contentDraftStorageKey);
 
-    if (!storedDraft) {
-      return;
-    }
+      try {
+        const response = await fetch(
+          `${publishedOverridesPath}?t=${Date.now()}`,
+          { cache: 'no-store' }
+        );
 
-    try {
-      const nextDraft = {
-        ...initialDraft,
-        ...(JSON.parse(storedDraft) as Partial<ContentDraft>),
-      };
+        if (response.ok) {
+          const published = (await response.json()) as SiteOverrides;
+          publishedDraft = published.contentDraft ?? {};
+        }
+      } catch {
+        publishedDraft = {};
+      }
 
-      window.setTimeout(() => setDraft(nextDraft), 0);
-    } catch {
-      window.localStorage.removeItem(contentDraftStorageKey);
-    }
+      try {
+        const localDraft = storedDraft
+          ? (JSON.parse(storedDraft) as Partial<ContentDraft>)
+          : {};
+        const nextDraft = {
+          ...initialDraft,
+          ...publishedDraft,
+          ...localDraft,
+        };
+
+        window.setTimeout(() => setDraft(nextDraft), 0);
+      } catch {
+        window.localStorage.removeItem(contentDraftStorageKey);
+      }
+    };
+
+    void loadDraft();
   }, []);
 
   const updateDraft = <Key extends keyof ContentDraft>(
@@ -142,10 +164,33 @@ export default function ContentUpdatesEditor() {
     }));
   };
 
-  const saveDraft = () => {
+  const saveDraft = async () => {
     window.localStorage.setItem(contentDraftStorageKey, payload);
     notifyEditableContentUpdated();
-    setStatus('Content changes saved. Visit the public site in this browser to see the updated copy.');
+    setStatus('Content changes saved locally. Publishing global update...');
+    setIsPublishing(true);
+
+    const response = await fetch('/api/admin/publish-content', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contentDraft: draft }),
+    });
+    const result = await response.json().catch(() => null);
+
+    setIsPublishing(false);
+
+    if (!response.ok) {
+      setStatus(
+        result?.message ??
+          'Content was saved locally, but the global publish failed.'
+      );
+      return;
+    }
+
+    setStatus(
+      result?.message ??
+        'Content published. Vercel will redeploy the public site shortly.'
+    );
   };
 
   return (
@@ -179,9 +224,10 @@ export default function ContentUpdatesEditor() {
             <button
               type="button"
               onClick={saveDraft}
+              disabled={isPublishing}
               className="rounded-md bg-accent-gold px-4 py-2 text-sm font-bold text-primary"
             >
-              Save Changes
+              {isPublishing ? 'Publishing...' : 'Save and Publish'}
             </button>
           </div>
         </div>

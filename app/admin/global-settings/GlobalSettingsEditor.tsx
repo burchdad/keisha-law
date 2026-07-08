@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   notifyEditableContentUpdated,
+  publishedOverridesPath,
   settingsDraftStorageKey,
 } from '../../../lib/editableSiteContent';
+import type { SiteOverrides } from '../../../lib/editableContentTypes';
 import { contactInfo } from '../../../lib/siteContent';
 
 type SettingsDraft = {
@@ -83,25 +85,45 @@ function SettingTextArea({
 export default function GlobalSettingsEditor() {
   const [draft, setDraft] = useState(initialDraft);
   const [status, setStatus] = useState('');
+  const [isPublishing, setIsPublishing] = useState(false);
   const payload = useMemo(() => JSON.stringify(draft, null, 2), [draft]);
 
   useEffect(() => {
-    const storedDraft = window.localStorage.getItem(settingsDraftStorageKey);
+    const loadDraft = async () => {
+      let publishedDraft: Partial<SettingsDraft> = {};
+      const storedDraft = window.localStorage.getItem(settingsDraftStorageKey);
 
-    if (!storedDraft) {
-      return;
-    }
+      try {
+        const response = await fetch(
+          `${publishedOverridesPath}?t=${Date.now()}`,
+          { cache: 'no-store' }
+        );
 
-    try {
-      const nextDraft = {
-        ...initialDraft,
-        ...(JSON.parse(storedDraft) as Partial<SettingsDraft>),
-      };
+        if (response.ok) {
+          const published = (await response.json()) as SiteOverrides;
+          publishedDraft = published.settingsDraft ?? {};
+        }
+      } catch {
+        publishedDraft = {};
+      }
 
-      window.setTimeout(() => setDraft(nextDraft), 0);
-    } catch {
-      window.localStorage.removeItem(settingsDraftStorageKey);
-    }
+      try {
+        const localDraft = storedDraft
+          ? (JSON.parse(storedDraft) as Partial<SettingsDraft>)
+          : {};
+        const nextDraft = {
+          ...initialDraft,
+          ...publishedDraft,
+          ...localDraft,
+        };
+
+        window.setTimeout(() => setDraft(nextDraft), 0);
+      } catch {
+        window.localStorage.removeItem(settingsDraftStorageKey);
+      }
+    };
+
+    void loadDraft();
   }, []);
 
   const updateDraft = <Key extends keyof SettingsDraft>(
@@ -114,10 +136,33 @@ export default function GlobalSettingsEditor() {
     }));
   };
 
-  const saveDraft = () => {
+  const saveDraft = async () => {
     window.localStorage.setItem(settingsDraftStorageKey, payload);
     notifyEditableContentUpdated();
-    setStatus('Global settings saved. Visit the public site in this browser to see the updated firm details.');
+    setStatus('Global settings saved locally. Publishing global update...');
+    setIsPublishing(true);
+
+    const response = await fetch('/api/admin/publish-content', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ settingsDraft: draft }),
+    });
+    const result = await response.json().catch(() => null);
+
+    setIsPublishing(false);
+
+    if (!response.ok) {
+      setStatus(
+        result?.message ??
+          'Settings were saved locally, but the global publish failed.'
+      );
+      return;
+    }
+
+    setStatus(
+      result?.message ??
+        'Settings published. Vercel will redeploy the public site shortly.'
+    );
   };
 
   return (
@@ -151,9 +196,10 @@ export default function GlobalSettingsEditor() {
             <button
               type="button"
               onClick={saveDraft}
+              disabled={isPublishing}
               className="rounded-md bg-accent-gold px-4 py-2 text-sm font-bold text-primary"
             >
-              Save Settings
+              {isPublishing ? 'Publishing...' : 'Save and Publish'}
             </button>
           </div>
         </div>

@@ -9,65 +9,29 @@ import {
   type ReactNode,
 } from 'react';
 import {
+  mergeEditableContent,
+  type EditableSiteContent,
+} from './editableContentMerge';
+import {
   contactInfo as defaultContactInfo,
   siteCopy as defaultSiteCopy,
 } from './siteContent';
+import type { ContentDraft, SettingsDraft, SiteOverrides } from './editableContentTypes';
 
 export const contentDraftStorageKey = 'rachal-law-content-draft';
 export const settingsDraftStorageKey = 'rachal-law-global-settings-draft';
 export const editableContentEvent = 'rachal-law-editable-content-updated';
+export const publishedOverridesPath = '/site-overrides.json';
 
-type SiteCopy = typeof defaultSiteCopy;
-type ContactInfo = typeof defaultContactInfo;
-
-type ContentDraft = {
-  heroHeadlineLine1?: string;
-  heroHeadlineLine2?: string;
-  heroBody?: string;
-  trustCardQuote?: string;
-  servicesHeading?: string;
-  servicesBody?: string;
-  meetHeading?: string;
-  meetParagraph1?: string;
-  meetParagraph2?: string;
-  aboutHeroBody?: string;
-  aboutStoryParagraph1?: string;
-  aboutStoryParagraph2?: string;
-  contactHeroBody?: string;
-  footerDescription?: string;
-};
-
-type SettingsDraft = Partial<
-  Pick<
-    ContactInfo,
-    | 'firmName'
-    | 'email'
-    | 'phoneDisplay'
-    | 'fax'
-    | 'addressLine1'
-    | 'addressLine2'
-    | 'weekdayHours'
-    | 'saturdayHours'
-    | 'sundayHours'
-    | 'notaryNote'
-  >
->;
-
-type EditableSiteContent = {
-  siteCopy: SiteCopy;
-  contactInfo: ContactInfo;
-};
-
-const EditableSiteContentContext = createContext<EditableSiteContent>({
+const defaultContent: EditableSiteContent = {
   siteCopy: defaultSiteCopy,
   contactInfo: defaultContactInfo,
-});
+};
 
-const readJson = <Value,>(key: string): Value | null => {
-  if (typeof window === 'undefined') {
-    return null;
-  }
+const EditableSiteContentContext =
+  createContext<EditableSiteContent>(defaultContent);
 
+const readStoredJson = <Value,>(key: string): Value | null => {
   const storedValue = window.localStorage.getItem(key);
 
   if (!storedValue) {
@@ -77,94 +41,30 @@ const readJson = <Value,>(key: string): Value | null => {
   try {
     return JSON.parse(storedValue) as Value;
   } catch {
+    window.localStorage.removeItem(key);
     return null;
   }
 };
 
-const phoneHrefFromDisplay = (phoneDisplay: string) => {
-  const digits = phoneDisplay.replace(/\D/g, '');
-  return digits ? `tel:${digits}` : defaultContactInfo.phoneHref;
-};
+const getLocalDrafts = () => ({
+  contentDraft: readStoredJson<ContentDraft>(contentDraftStorageKey) ?? {},
+  settingsDraft: readStoredJson<SettingsDraft>(settingsDraftStorageKey) ?? {},
+});
 
-const emailHrefFromEmail = (email: string) =>
-  email ? `mailto:${email}` : defaultContactInfo.emailHref;
+const fetchPublishedOverrides = async (): Promise<SiteOverrides | null> => {
+  try {
+    const response = await fetch(`${publishedOverridesPath}?t=${Date.now()}`, {
+      cache: 'no-store',
+    });
 
-const getEditableContent = (): EditableSiteContent => {
-  const contentDraft = readJson<ContentDraft>(contentDraftStorageKey) ?? {};
-  const settingsDraft = readJson<SettingsDraft>(settingsDraftStorageKey) ?? {};
-  const email = settingsDraft.email ?? defaultContactInfo.email;
-  const phoneDisplay =
-    settingsDraft.phoneDisplay ?? defaultContactInfo.phoneDisplay;
+    if (!response.ok) {
+      return null;
+    }
 
-  return {
-    siteCopy: {
-      ...defaultSiteCopy,
-      hero: {
-        ...defaultSiteCopy.hero,
-        headlineLine1:
-          contentDraft.heroHeadlineLine1 ??
-          defaultSiteCopy.hero.headlineLine1,
-        headlineLine2:
-          contentDraft.heroHeadlineLine2 ??
-          defaultSiteCopy.hero.headlineLine2,
-        body: contentDraft.heroBody ?? defaultSiteCopy.hero.body,
-      },
-      servicesIntro: {
-        ...defaultSiteCopy.servicesIntro,
-        heading:
-          contentDraft.servicesHeading ??
-          defaultSiteCopy.servicesIntro.heading,
-        body: contentDraft.servicesBody ?? defaultSiteCopy.servicesIntro.body,
-      },
-      trustCard: {
-        ...defaultSiteCopy.trustCard,
-        quote:
-          contentDraft.trustCardQuote ?? defaultSiteCopy.trustCard.quote,
-      },
-      homeAbout: {
-        ...defaultSiteCopy.homeAbout,
-        heading:
-          contentDraft.meetHeading ?? defaultSiteCopy.homeAbout.heading,
-        paragraphs: [
-          contentDraft.meetParagraph1 ??
-            defaultSiteCopy.homeAbout.paragraphs[0],
-          contentDraft.meetParagraph2 ??
-            defaultSiteCopy.homeAbout.paragraphs[1],
-        ],
-      },
-      aboutPage: {
-        ...defaultSiteCopy.aboutPage,
-        heroBody:
-          contentDraft.aboutHeroBody ?? defaultSiteCopy.aboutPage.heroBody,
-        storyParagraphs: [
-          contentDraft.aboutStoryParagraph1 ??
-            defaultSiteCopy.aboutPage.storyParagraphs[0],
-          contentDraft.aboutStoryParagraph2 ??
-            defaultSiteCopy.aboutPage.storyParagraphs[1],
-        ],
-      },
-      contactPage: {
-        ...defaultSiteCopy.contactPage,
-        heroBody:
-          contentDraft.contactHeroBody ??
-          defaultSiteCopy.contactPage.heroBody,
-      },
-      footer: {
-        ...defaultSiteCopy.footer,
-        description:
-          contentDraft.footerDescription ??
-          defaultSiteCopy.footer.description,
-      },
-    },
-    contactInfo: {
-      ...defaultContactInfo,
-      ...settingsDraft,
-      email,
-      emailHref: emailHrefFromEmail(email),
-      phoneDisplay,
-      phoneHref: phoneHrefFromDisplay(phoneDisplay),
-    },
-  };
+    return (await response.json()) as SiteOverrides;
+  } catch {
+    return null;
+  }
 };
 
 export function notifyEditableContentUpdated() {
@@ -176,21 +76,39 @@ export function EditableSiteContentProvider({
 }: {
   children: ReactNode;
 }) {
-  const [content, setContent] = useState<EditableSiteContent>({
-    siteCopy: defaultSiteCopy,
-    contactInfo: defaultContactInfo,
-  });
+  const [content, setContent] = useState<EditableSiteContent>(defaultContent);
 
   useEffect(() => {
-    const refreshContent = () => setContent(getEditableContent());
+    const refreshContent = async () => {
+      const publishedOverrides = await fetchPublishedOverrides();
+      const localDrafts = getLocalDrafts();
 
-    refreshContent();
-    window.addEventListener('storage', refreshContent);
-    window.addEventListener(editableContentEvent, refreshContent);
+      setContent(
+        mergeEditableContent({
+          contentDraft: {
+            ...(publishedOverrides?.contentDraft ?? {}),
+            ...localDrafts.contentDraft,
+          },
+          settingsDraft: {
+            ...(publishedOverrides?.settingsDraft ?? {}),
+            ...localDrafts.settingsDraft,
+          },
+        })
+      );
+    };
+
+    void refreshContent();
+
+    const refreshFromEvent = () => {
+      void refreshContent();
+    };
+
+    window.addEventListener('storage', refreshFromEvent);
+    window.addEventListener(editableContentEvent, refreshFromEvent);
 
     return () => {
-      window.removeEventListener('storage', refreshContent);
-      window.removeEventListener(editableContentEvent, refreshContent);
+      window.removeEventListener('storage', refreshFromEvent);
+      window.removeEventListener(editableContentEvent, refreshFromEvent);
     };
   }, []);
 
