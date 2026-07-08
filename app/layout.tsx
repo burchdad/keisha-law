@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import SiteChrome from "../components/SiteChrome";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,7 +16,7 @@ const cormorantGaramond = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Rachal Law Firm APC - Boutique Legal Services",
-  description: "Helping families navigate difficult legal matters with compassion, clarity, and experience.",
+  description: "Helping families navigate difficult legal matters with clarity and experience.",
 };
 
 export default function RootLayout({
@@ -31,9 +30,7 @@ export default function RootLayout({
       className={`${inter.variable} ${cormorantGaramond.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
-        <main className="flex-1 pt-16">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

@@ -17,7 +17,7 @@ export default function ReassuranceBanner() {
             You Don&apos;t Have To Navigate This Alone
           </h2>
           <p className="text-lg md:text-xl text-muted-whites/80 mb-8 max-w-2xl mx-auto">
-            When life brings legal challenges, you deserve guidance that combines expertise with genuine compassion.
+            When life brings legal challenges, you deserve guidance that combines expertise with genuine care.
           </p>
           <Link
             href="/contact"

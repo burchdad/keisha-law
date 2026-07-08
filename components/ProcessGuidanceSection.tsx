@@ -51,7 +51,7 @@ export default function ProcessGuidanceSection() {
           </h2>
 
           <p className="text-lg text-text/80 max-w-2xl mx-auto">
-            A clear, compassionate process designed to reduce uncertainty and
+            A clear process designed to reduce uncertainty and
             provide peace of mind.
           </p>
         </motion.div>

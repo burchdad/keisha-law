@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
   {
-    quote: "Attorney Law guided us through a difficult conservatorship with such compassion and clarity. We felt truly supported every step of the way.",
+    quote: "Attorney Law guided us through a difficult conservatorship with clarity and care. We felt truly supported every step of the way.",
     author: "Sarah M.",
     location: "Los Angeles, CA",
   },
@@ -35,7 +35,7 @@ export default function TestimonialsSection() {
             Trusted by Families Like Yours
           </h2>
           <p className="text-lg text-muted-whites/80 max-w-2xl mx-auto">
-            Real experiences from clients who found compassionate legal guidance during difficult times.
+            Real experiences from clients who found trusted legal guidance during difficult times.
           </p>
         </motion.div>
 

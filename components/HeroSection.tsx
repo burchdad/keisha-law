@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { siteCopy } from '../lib/siteContent';
 
 export default function HeroSection() {
   return (
@@ -25,10 +26,10 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-muted-whites mb-6"
         >
-          Guiding Families Through
+          {siteCopy.hero.headlineLine1}
           <br />
           <span className="relative">
-            Difficult Times
+            {siteCopy.hero.headlineLine2}
             <span className="absolute bottom-0 left-0 w-full h-1 bg-accent-gold"></span>
           </span>
         </motion.h1>
@@ -39,9 +40,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg md:text-xl text-muted-whites/90 mb-8 max-w-2xl mx-auto leading-relaxed"
         >
-          Drawing from 30+ years of experience in the legal field, Keisha Rachal provides 
-          trusted guidance for conservatorships, probate, estate planning, and 
-          family matters.
+          {siteCopy.hero.body}
         </motion.p>
 
         <motion.div

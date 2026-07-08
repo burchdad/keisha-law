@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { siteCopy } from '../../lib/siteContent';
 
 export default function About() {
   return (
@@ -14,10 +15,10 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl font-serif font-light text-muted-whites mb-6">
-              About Attorney Keisha Rachal
+              {siteCopy.aboutPage.heroHeading}
             </h1>
             <p className="text-lg md:text-xl text-muted-whites/80 max-w-2xl mx-auto">
-              Dedicated to providing legal guidance with 30+ years of experience serving the Los Angeles community.
+              {siteCopy.aboutPage.heroBody}
             </p>
           </motion.div>
         </div>
@@ -34,15 +35,12 @@ export default function About() {
               className="max-w-3xl mx-auto"
             >
               <h2 className="text-3xl font-serif font-light text-text mb-6">
-                A Commitment to Legal Service
+                {siteCopy.aboutPage.storyHeading}
               </h2>
               <div className="space-y-4 text-text/80 leading-relaxed">
-                <p>
-                  With 30+ years in family law, estate planning, and probate as a paralegal before being admitted to practice law &mdash; Keisha Rachal offers something uncommon: the seasoned, in-the-trenches knowledge of a longtime legal professional.
-                </p>
-                <p>
-                  She serves families across the County Los Angeles with thorough preparation, clear communication, and genuine care. Her boutique practice means every client gets personalized attention, every detail gets considered, and every question gets answered with patience and clarity.
-                </p>
+                {siteCopy.aboutPage.storyParagraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -55,15 +53,12 @@ export default function About() {
             className="bg-white rounded-lg p-8 shadow-lg border border-accent-gold/10 mb-16"
           >
             <h3 className="text-2xl font-serif font-light text-text mb-6 text-center">
-              Our Philosophy
+              {siteCopy.aboutPage.philosophyHeading}
             </h3>
             <div className="space-y-4 text-text/70 leading-relaxed text-center max-w-3xl mx-auto">
-              <p>
-                &ldquo;Legal matters often arise during life&apos;s most difficult moments. My approach is rooted in the belief that everyone deserves guidance that combines professional expertise with genuine compassion. I listen first, understand deeply, and provide clear, actionable solutions that prioritize your family&apos;s well-being.&rdquo;
-              </p>
-              <p>
-                &ldquo;Trust is earned through transparency, consistency, and care. I believe in building lasting relationships with my clients, not just handling cases. Your peace of mind is my highest priority.&rdquo;
-              </p>
+              {siteCopy.aboutPage.philosophyParagraphs.map((paragraph) => (
+                <p key={paragraph}>&ldquo;{paragraph}&rdquo;</p>
+              ))}
             </div>
           </motion.div>
 

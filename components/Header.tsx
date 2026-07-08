@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { contactInfo, firmLinks } from '../lib/siteContent';
 
 const practiceAreaLinks = [
   { href: '/practice-areas/conservatorships', label: 'Conservatorships' },
@@ -18,11 +19,6 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
-
-const paymentUrl =
-  'https://secure.lawpay.com/pages/rachallawfirmapc/operating';
-const clientPortalUrl =
-  'https://www.mycase.com/';
 
 export default function Header() {
   const [isPracticeMenuOpen, setIsPracticeMenuOpen] = useState(false);
@@ -47,7 +43,7 @@ export default function Header() {
             onClick={closeMenus}
             className="text-2xl font-serif font-semibold text-muted-whites hover:text-accent-gold transition-colors"
           >
-            Rachal Law Firm APC
+            {contactInfo.firmName}
           </Link>
 
           <nav className="hidden md:flex space-x-8" aria-label="Primary">
@@ -130,7 +126,7 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <a
-              href={paymentUrl}
+              href={firmLinks.payment}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden xl:inline-flex bg-accent-gold text-primary px-4 py-2 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
@@ -139,7 +135,7 @@ export default function Header() {
             </a>
 
             <a
-              href={clientPortalUrl}
+              href={firmLinks.clientPortal}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden xl:inline-flex border border-accent-gold text-accent-gold px-4 py-2 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
@@ -148,10 +144,10 @@ export default function Header() {
             </a>
 
             <a
-              href="tel:213-297-7642"
+              href={contactInfo.phoneHref}
               className="hidden sm:inline-flex bg-secondary text-muted-whites px-4 py-2 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
             >
-              (213) 297-7642
+              {contactInfo.phoneDisplay}
             </a>
 
             <button
@@ -221,13 +217,13 @@ export default function Header() {
               </Link>
             ))}
             <a
-              href="tel:213-297-7642"
+              href={contactInfo.phoneHref}
               className="mt-3 flex justify-center bg-secondary text-muted-whites px-4 py-3 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"
             >
-              (213) 297-7642
+              {contactInfo.phoneDisplay}
             </a>
             <a
-              href={paymentUrl}
+              href={firmLinks.payment}
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center bg-accent-gold text-primary px-4 py-3 rounded-md hover:bg-accent-gold/90 transition-colors font-medium"
@@ -235,7 +231,7 @@ export default function Header() {
               Payment Link
             </a>
             <a
-              href={clientPortalUrl}
+              href={firmLinks.clientPortal}
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center border border-accent-gold text-accent-gold px-4 py-3 rounded-md hover:bg-accent-gold hover:text-primary transition-colors font-medium"

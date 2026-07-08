@@ -32,7 +32,7 @@ const practiceAreas: Record<string, PracticeAreaData> = {
     subtitle: 'Protecting Vulnerable Family Members',
     heroImage: '/conservatorship.png',
     heroImageAlt: 'Conservatorship consultation with family and attorney',
-    heroDescription: 'Compassionate guidance through conservatorship proceedings to ensure the safety and well-being of loved ones who need protection.',
+    heroDescription: 'Clear guidance through conservatorship proceedings to ensure the safety and well-being of loved ones who need protection.',
     emotionalPositioning: 'When a family member can no longer make decisions for themselves, establishing a conservatorship provides the legal framework to ensure their care and protection. This process, while necessary, can be emotionally challenging. We guide you through it with sensitivity and expertise.',
     educationalContent: {
       title: 'Understanding Conservatorships',
@@ -162,7 +162,7 @@ const practiceAreas: Record<string, PracticeAreaData> = {
     heroImage: '/probate-matters.png',
     heroImageAlt: 'Probate attorney reviewing estate paperwork with clients',
     heroDescription: 'Guidance through probate proceedings that brings clarity and resolution during difficult times of loss and transition.',
-    emotionalPositioning: 'Losing a loved one is never easy, and dealing with probate matters can add stress during an already difficult time. We provide compassionate, clear guidance to help you navigate this process with confidence.',
+    emotionalPositioning: 'Losing a loved one is never easy, and dealing with probate matters can add stress during an already difficult time. We provide clear guidance to help you navigate this process with confidence.',
     educationalContent: {
       title: 'Understanding Probate',
       content: [
@@ -246,9 +246,9 @@ const practiceAreas: Record<string, PracticeAreaData> = {
     title: 'Limited Family Law',
     subtitle: 'Calm Resolution, Peaceful Solutions',
     heroImage: '/limited-family-law.png',
-    heroImageAlt: 'Family law consultation with compassionate attorney',
+    heroImageAlt: 'Family law consultation with attorney',
     heroDescription: 'Guidance through family law matters with a focus on resolution, understanding, and protecting what matters most.',
-    emotionalPositioning: 'Family conflicts can be among life\'s most challenging experiences. We approach these matters with compassion, seeking resolutions that prioritize family relationships and long-term well-being.',
+    emotionalPositioning: 'Family conflicts can be among life\'s most challenging experiences. We approach these matters with care and professionalism, seeking resolutions that prioritize family relationships and long-term well-being.',
     educationalContent: {
       title: 'Understanding Family Law Matters',
       content: [
@@ -515,7 +515,7 @@ export default function PracticeAreaPage({ params }: PageProps) {
             Need Immediate Assistance?
           </h3>
           <p className="text-muted-whites/80 mb-6">
-            Our office is here to help you navigate this process with compassion and expertise.
+            Our office is here to help you navigate this process with clarity and expertise.
           </p>
           <Link
             href="/contact"
