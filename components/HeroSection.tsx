@@ -63,7 +63,7 @@ export default function HeroSection() {
             href="/about"
             className="border-2 border-muted-whites text-muted-whites px-8 py-4 rounded-md hover:bg-muted-whites hover:text-primary transition-colors font-medium text-lg"
           >
-            Learn More
+            Meet Keisha Rachal
           </Link>
         </motion.div>
       </div>

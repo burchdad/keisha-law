@@ -60,7 +60,7 @@ export default function PracticeAreaGrid() {
                   href={area.href}
                   className="inline-flex items-center text-secondary hover:text-accent-gold transition-colors font-medium"
                 >
-                  Learn More
+                  Learn About {area.title}
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
