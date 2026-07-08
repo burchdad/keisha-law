@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { siteCopy } from '../lib/siteContent';
+import { useEditableSiteContent } from '../lib/editableSiteContent';
 
 export default function HeroSection() {
+  const { siteCopy } = useEditableSiteContent();
+
   return (
     <section
       className="relative h-screen flex items-center justify-center overflow-hidden"

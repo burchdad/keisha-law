@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { contactInfo, practiceAreas, siteCopy } from '../lib/siteContent';
+import { practiceAreas } from '../lib/siteContent';
+import { useEditableSiteContent } from '../lib/editableSiteContent';
 
 export default function PracticeAreaGrid() {
+  const { contactInfo, siteCopy } = useEditableSiteContent();
+
   return (
     <section className="py-20 bg-warm-ivory">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

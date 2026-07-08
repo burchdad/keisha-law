@@ -2,9 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { contactInfo, siteCopy } from '../../lib/siteContent';
+import { useEditableSiteContent } from '../../lib/editableSiteContent';
 
 export default function Contact() {
+  const { contactInfo, siteCopy } = useEditableSiteContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',

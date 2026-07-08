@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { siteCopy } from '../../lib/siteContent';
+import { useEditableSiteContent } from '../../lib/editableSiteContent';
 
 export default function About() {
+  const { siteCopy } = useEditableSiteContent();
+
   return (
     <div className="min-h-screen">
       <section className="relative py-32 bg-primary">

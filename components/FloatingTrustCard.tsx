@@ -1,9 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { siteCopy } from '../lib/siteContent';
+import { useEditableSiteContent } from '../lib/editableSiteContent';
 
 export default function FloatingTrustCard() {
+  const { siteCopy } = useEditableSiteContent();
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}

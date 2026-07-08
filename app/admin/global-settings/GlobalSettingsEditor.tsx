@@ -1,6 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  notifyEditableContentUpdated,
+  settingsDraftStorageKey,
+} from '../../../lib/editableSiteContent';
 import { contactInfo } from '../../../lib/siteContent';
 
 type SettingsDraft = {
@@ -81,6 +85,25 @@ export default function GlobalSettingsEditor() {
   const [status, setStatus] = useState('');
   const payload = useMemo(() => JSON.stringify(draft, null, 2), [draft]);
 
+  useEffect(() => {
+    const storedDraft = window.localStorage.getItem(settingsDraftStorageKey);
+
+    if (!storedDraft) {
+      return;
+    }
+
+    try {
+      const nextDraft = {
+        ...initialDraft,
+        ...(JSON.parse(storedDraft) as Partial<SettingsDraft>),
+      };
+
+      window.setTimeout(() => setDraft(nextDraft), 0);
+    } catch {
+      window.localStorage.removeItem(settingsDraftStorageKey);
+    }
+  }, []);
+
   const updateDraft = <Key extends keyof SettingsDraft>(
     key: Key,
     value: SettingsDraft[Key]
@@ -92,8 +115,9 @@ export default function GlobalSettingsEditor() {
   };
 
   const saveDraft = () => {
-    window.localStorage.setItem('rachal-law-global-settings-draft', payload);
-    setStatus('Global settings draft saved in this dashboard. No support ticket was created.');
+    window.localStorage.setItem(settingsDraftStorageKey, payload);
+    notifyEditableContentUpdated();
+    setStatus('Global settings saved. Visit the public site in this browser to see the updated firm details.');
   };
 
   return (
@@ -116,6 +140,8 @@ export default function GlobalSettingsEditor() {
               type="button"
               onClick={() => {
                 setDraft(initialDraft);
+                window.localStorage.removeItem(settingsDraftStorageKey);
+                notifyEditableContentUpdated();
                 setStatus('');
               }}
               className="rounded-md border border-accent-gold/40 px-4 py-2 text-sm font-bold text-accent-gold"

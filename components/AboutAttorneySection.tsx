@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { siteCopy } from '../lib/siteContent';
+import { useEditableSiteContent } from '../lib/editableSiteContent';
 
 export default function AboutAttorneySection() {
+  const { siteCopy } = useEditableSiteContent();
+
   return (
     <section
       className="relative py-20"

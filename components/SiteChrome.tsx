@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { EditableSiteContentProvider } from '../lib/editableSiteContent';
 
 export default function SiteChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -14,10 +15,10 @@ export default function SiteChrome({ children }: { children: ReactNode }) {
   }
 
   return (
-    <>
+    <EditableSiteContentProvider>
       <Header />
       <main className="flex-1 pt-16">{children}</main>
       <Footer />
-    </>
+    </EditableSiteContentProvider>
   );
 }

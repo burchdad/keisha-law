@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { contactInfo, firmLinks } from '../lib/siteContent';
+import { firmLinks } from '../lib/siteContent';
+import { useEditableSiteContent } from '../lib/editableSiteContent';
 
 const practiceAreaLinks = [
   { href: '/practice-areas/conservatorships', label: 'Conservatorships' },
@@ -23,6 +24,7 @@ const navLinks = [
 export default function Header() {
   const [isPracticeMenuOpen, setIsPracticeMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { contactInfo } = useEditableSiteContent();
 
   const closeMenus = () => {
     setIsPracticeMenuOpen(false);

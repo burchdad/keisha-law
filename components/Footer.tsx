@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { contactInfo, firmLinks, siteCopy } from '../lib/siteContent';
+import { firmLinks } from '../lib/siteContent';
+import { useEditableSiteContent } from '../lib/editableSiteContent';
 
 export default function Footer() {
+  const { contactInfo, siteCopy } = useEditableSiteContent();
+
   return (
     <footer className="bg-primary text-muted-whites">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
