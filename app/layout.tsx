@@ -18,18 +18,18 @@ const cormorantGaramond = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.krachallaw.com"),
   title: {
-    default: "Rachal Law Firm APC | Long Beach Estate Planning, Probate and Family Law",
+    default: "Rachal Law Firm APC | Long Beach Estate Planning Lawyer",
     template: "%s | Rachal Law Firm APC",
   },
   description:
-    "Rachal Law Firm APC provides Los Angeles County families with legal guidance for conservatorships, guardianships, estate planning, probate matters, name changes, limited family law, and notarial services by appointment.",
+    "Long Beach legal guidance for estate planning, probate, conservatorships, guardianships, name changes, limited family law, and notary appointments.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Rachal Law Firm APC",
     description:
-      "Long Beach legal guidance for families navigating conservatorships, probate, estate planning, and related matters.",
+      "Long Beach legal guidance for estate planning, probate, conservatorships, and related family matters.",
     url: "https://www.krachallaw.com",
     siteName: "Rachal Law Firm APC",
     images: [
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Rachal Law Firm APC",
     description:
-      "Legal guidance for Los Angeles County families in estate planning, probate, conservatorships, and related matters.",
+      "Long Beach estate planning, probate, conservatorship, and family legal guidance.",
     images: ["/hero-bg.png"],
   },
   robots: {
