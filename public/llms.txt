@@ -7,6 +7,8 @@ Rachal Law Firm APC is a Long Beach, California law firm at https://www.krachall
 - Homepage: https://www.krachallaw.com/
 - About: https://www.krachallaw.com/about
 - Contact: https://www.krachallaw.com/contact
+- Privacy Policy: https://www.krachallaw.com/privacy-policy
+- Terms of Service: https://www.krachallaw.com/terms-of-service
 - Conservatorships: https://www.krachallaw.com/practice-areas/conservatorships
 - Guardianships: https://www.krachallaw.com/practice-areas/guardianships
 - Estate Planning: https://www.krachallaw.com/practice-areas/estate-planning

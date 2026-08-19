@@ -19,13 +19,30 @@ export default function AboutAttorneySection() {
       />
       <div className="absolute inset-0 bg-primary/70" />
       <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mx-auto w-full max-w-sm"
+          >
+            <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-accent-gold/30 shadow-2xl">
+              <Image
+                src="/keisha-rachal-headshot.png"
+                alt="Attorney Keisha Rachal"
+                fill
+                sizes="(max-width: 1024px) 80vw, 360px"
+                className="object-cover"
+              />
+            </div>
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center"
+            className="text-center lg:text-left"
           >
             <h2 className="text-3xl md:text-4xl font-serif font-light text-muted-whites mb-6">
               {siteCopy.homeAbout.heading}

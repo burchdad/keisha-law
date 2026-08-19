@@ -45,6 +45,8 @@ export default function Footer() {
               <li><Link href="/" className="hover:text-accent-gold transition-colors">Home</Link></li>
               <li><Link href="/about" className="hover:text-accent-gold transition-colors">About</Link></li>
               <li><Link href="/contact" className="hover:text-accent-gold transition-colors">Contact</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-accent-gold transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms-of-service" className="hover:text-accent-gold transition-colors">Terms of Service</Link></li>
               <li>
                 <a
                   href={firmLinks.payment}
@@ -95,6 +97,14 @@ export default function Footer() {
 
         <div className="border-t border-accent-gold/20 mt-8 pt-8 text-center text-sm text-muted-whites/60">
           <p>&copy; 2026 {contactInfo.firmName}. All rights reserved. | Attorney Advertising | This website is for informational purposes only and does not constitute legal advice.</p>
+          <div className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <Link href="/privacy-policy" className="hover:text-accent-gold transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-of-service" className="hover:text-accent-gold transition-colors">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

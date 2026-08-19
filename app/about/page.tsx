@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEditableSiteContent } from '../../lib/editableSiteContent';
 
@@ -28,13 +29,30 @@ export default function About() {
 
       <section className="py-20 bg-warm-ivory">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-16">
+          <div className="mb-16 grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="mx-auto w-full max-w-sm"
+            >
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-accent-gold/20 bg-white shadow-lg">
+                <Image
+                  src="/keisha-rachal-headshot.png"
+                  alt="Attorney Keisha Rachal"
+                  fill
+                  sizes="(max-width: 1024px) 80vw, 340px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="max-w-3xl mx-auto"
             >
               <h2 className="text-3xl font-serif font-light text-text mb-6">
                 {siteCopy.aboutPage.storyHeading}
