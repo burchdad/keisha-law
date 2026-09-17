@@ -6,9 +6,9 @@ export const firmLinks = {
 
 export const contactInfo = {
   firmName: 'Rachal Law Firm APC',
-  phoneDisplay: '(213) 297-7642',
-  phoneHref: 'tel:213-297-7642',
-  fax: '(562) 548-5078',
+  phoneDisplay: '(562) 786-6388',
+  phoneHref: 'tel:562-786-6388',
+  fax: '(562) 285-9016',
   email: 'info@krachallaw.com',
   emailHref: 'mailto:info@krachallaw.com',
   addressLine1: '3520 Long Beach Blvd., Suite 204',

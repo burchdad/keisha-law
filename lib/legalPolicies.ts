@@ -105,8 +105,7 @@ export const legalPolicySections = [
   {
     title: 'Contact Information',
     paragraphs: [
-      'Rachal Law Firm APC, 3520 Long Beach Blvd., Suite 204, Long Beach, CA 90807. Phone: (213) 297-7642. Email: info@krachallaw.com.',
+      'Rachal Law Firm APC, 3520 Long Beach Blvd., Suite 204, Long Beach, CA 90807. Phone: (562) 786-6388. Fax: (562) 285-9016. Email: info@krachallaw.com.',
     ],
   },
 ];
-

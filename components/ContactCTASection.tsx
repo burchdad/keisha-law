@@ -27,10 +27,10 @@ export default function ContactCTASection() {
               Schedule Consultation
             </Link>
             <a
-              href="tel:213-297-7642"
+              href="tel:562-786-6388"
               className="border-2 border-secondary text-secondary px-8 py-4 rounded-md hover:bg-secondary hover:text-muted-whites transition-colors font-medium"
             >
-              Call (213) 297-7642
+              Call (562) 786-6388
             </a>
           </div>
         </motion.div>
