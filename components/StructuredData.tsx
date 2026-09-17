@@ -1,4 +1,4 @@
-import { contactInfo, firmLinks, practiceAreas } from '../lib/siteContent';
+import { contactInfo, practiceAreas } from '../lib/siteContent';
 
 const baseUrl = 'https://www.krachallaw.com';
 
@@ -9,6 +9,7 @@ export default function StructuredData() {
     '@id': `${baseUrl}/#legalservice`,
     name: contactInfo.firmName,
     url: baseUrl,
+    employee: { '@id': `${baseUrl}/#keisha-rachal` },
     telephone: contactInfo.phoneDisplay,
     email: contactInfo.email,
     image: `${baseUrl}/hero-bg.png`,
@@ -67,38 +68,17 @@ export default function StructuredData() {
         },
       ],
     },
-    sameAs: [firmLinks.payment, firmLinks.clientPortal],
   };
 
-  const faqSchema = {
+  const attorneySchema = {
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'What legal services does Rachal Law Firm APC provide?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Rachal Law Firm APC assists with conservatorships, guardianships, estate planning, probate matters, name changes, limited family law matters, and notarial services by appointment.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Where does Rachal Law Firm APC serve clients?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'The firm serves families across Los Angeles County from its office in Long Beach, California.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How can someone request a consultation?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `Prospective clients can request a consultation through the contact form or call the office at ${contactInfo.phoneDisplay}.`,
-        },
-      },
-    ],
+    '@type': 'Person',
+    '@id': `${baseUrl}/#keisha-rachal`,
+    name: 'Keisha Rachal',
+    jobTitle: 'Attorney',
+    url: `${baseUrl}/about`,
+    image: `${baseUrl}/keisha-rachal-headshot.png`,
+    worksFor: { '@id': `${baseUrl}/#legalservice` },
   };
 
   return (
@@ -112,7 +92,7 @@ export default function StructuredData() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
+          __html: JSON.stringify(attorneySchema),
         }}
       />
     </>

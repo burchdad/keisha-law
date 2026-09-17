@@ -324,6 +324,24 @@ export default function PracticeAreaPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            '@id': `https://www.krachallaw.com/practice-areas/${slug}#faq`,
+            mainEntity: data.faqs.map((faq) => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer,
+              },
+            })),
+          }),
+        }}
+      />
       {/* Hero Section */}
       <section className="relative min-h-[620px] flex items-center overflow-hidden bg-primary">
   <Image
