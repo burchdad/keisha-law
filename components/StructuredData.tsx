@@ -95,7 +95,7 @@ export default function StructuredData() {
         name: 'How can someone request a consultation?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Prospective clients can request a consultation through the contact form or call the office at (213) 297-7642.',
+          text: `Prospective clients can request a consultation through the contact form or call the office at ${contactInfo.phoneDisplay}.`,
         },
       },
     ],
