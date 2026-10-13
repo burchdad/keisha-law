@@ -7,9 +7,11 @@
     "build": "next build",
     "check": "npm run lint",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:contact": "node --experimental-strip-types --test tests/contact.test.mjs tests/contact-storage.test.mjs"
   },
   "dependencies": {
+    "@vercel/blob": "2.8.1",
     "framer-motion": "^12.41.0",
     "next": "^16.2.9",
     "react": "^19.2.7",

@@ -1,8 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { CONTACT_LIMITS } from '../../lib/contact-fields';
+import { createContactRequest, contactWasAccepted } from '../../lib/contact-client';
 import { useEditableSiteContent } from '../../lib/editableSiteContent';
+
+// Build-time cutover gate. Existing production behavior stays on Formspree by default.
+const usesResend = process.env.NEXT_PUBLIC_CONTACT_PROVIDER === 'resend';
 
 export default function Contact() {
   const { contactInfo, siteCopy } = useEditableSiteContent();
@@ -12,57 +17,64 @@ export default function Contact() {
     phone: '',
     practiceArea: '',
     message: '',
+    website: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
+  const inFlight = useRef(false);
+  const submissionId = useRef<string | null>(null);
+  const activeRequest = useRef<AbortController | null>(null);
+  const feedback = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => () => activeRequest.current?.abort(), []);
+  useEffect(() => {
+    if (submitSuccess || submitError) feedback.current?.focus();
+  }, [submitSuccess, submitError]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (inFlight.current) return;
+    inFlight.current = true;
     setIsSubmitting(true);
     setSubmitSuccess(false);
     setSubmitError('');
+    const controller = new AbortController();
+    activeRequest.current = controller;
+    const timeout = window.setTimeout(() => controller.abort(), 55000);
 
     try {
-      const response = await fetch('https://formspree.io/f/xykqaaln', {
+      submissionId.current ??= crypto.randomUUID();
+      const { url, payload } = createContactRequest(formData, submissionId.current, usesResend);
+      const response = await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          _subject: 'New Rachal Law Firm APC Website Inquiry',
-        }),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify(payload),
       });
-
-      if (response.ok) {
+      const result = await response.json().catch(() => null);
+      if (contactWasAccepted(response.ok, result, usesResend)) {
         setSubmitSuccess(true);
-
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          practiceArea: '',
-          message: '',
-        });
-
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
+        setFormData({ name: '', email: '', phone: '', practiceArea: '', message: '', website: '' });
+        submissionId.current = null;
       } else {
-        setSubmitError(
-          'Something went wrong while sending your message. Please try again.'
-        );
+        setSubmitError(result?.saved === true
+          ? 'Your inquiry was saved, but we could not confirm that our office was notified. Please call our office.'
+          : response.status === 429
+          ? 'Too many attempts. Please wait ten minutes or call our office.'
+          : response.status === 400
+            ? 'Please check your entries and try again.'
+            : 'We could not confirm your inquiry was submitted. Please retry or call our office.');
       }
     } catch {
-      setSubmitError(
-        'Something went wrong while sending your message. Please try again.'
-      );
+      // Keep the form and retry ID: a timeout does not establish whether delivery was accepted.
+      setSubmitError('We could not confirm your inquiry was submitted. Please retry or call our office.');
     } finally {
+      window.clearTimeout(timeout);
+      activeRequest.current = null;
+      inFlight.current = false;
       setIsSubmitting(false);
     }
   };
@@ -72,6 +84,9 @@ export default function Contact() {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
+    submissionId.current = null;
+    setSubmitSuccess(false);
+    setSubmitError('');
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -285,27 +300,31 @@ export default function Contact() {
             >
               <form
                 onSubmit={handleSubmit}
+                aria-busy={isSubmitting}
                 className="bg-warm-ivory rounded-lg p-8 shadow-lg"
               >
-                <div className="space-y-6">
+                <div ref={feedback} tabIndex={-1} aria-live="polite" aria-atomic="true">
                   {submitSuccess && (
                     <div className="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-md">
-                      Your message has been sent successfully. Our office will
-                      contact you soon.
+                      Your inquiry has been submitted for delivery. If your matter
+                      is time-sensitive, please call our office.
                     </div>
                   )}
 
                   {submitError && (
-                    <div className="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-md">
+                    <div role="alert" className="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-md">
                       {submitError}
                     </div>
                   )}
 
-                  <input
-                    type="hidden"
-                    name="_subject"
-                    value="New Rachal Law Firm APC Website Inquiry"
-                  />
+                </div>
+                <fieldset disabled={isSubmitting} className="space-y-6 mt-6 min-w-0">
+                  <legend className="sr-only">Contact inquiry</legend>
+                  <div aria-hidden="true" className="absolute -left-[10000px] top-auto w-px h-px overflow-hidden">
+                    <label htmlFor="website">Leave this field empty</label>
+                    <input id="website" name="website" type="text" tabIndex={-1}
+                      autoComplete="off" maxLength={200} value={formData.website} onChange={handleChange} />
+                  </div>
 
                   <div>
                     <label
@@ -319,6 +338,8 @@ export default function Contact() {
                       type="text"
                       id="name"
                       name="name"
+                      autoComplete="name"
+                      maxLength={CONTACT_LIMITS.name}
                       required
                       value={formData.name}
                       onChange={handleChange}
@@ -338,6 +359,8 @@ export default function Contact() {
                       type="email"
                       id="email"
                       name="email"
+                      autoComplete="email"
+                      maxLength={CONTACT_LIMITS.email}
                       required
                       value={formData.email}
                       onChange={handleChange}
@@ -357,6 +380,8 @@ export default function Contact() {
                       type="tel"
                       id="phone"
                       name="phone"
+                      autoComplete="tel"
+                      maxLength={CONTACT_LIMITS.phone}
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-accent-gold/20 rounded-md bg-white text-text placeholder:text-text/45 focus:outline-none focus:ring-2 focus:ring-secondary"
@@ -410,6 +435,7 @@ export default function Contact() {
                     <textarea
                       id="message"
                       name="message"
+                      maxLength={CONTACT_LIMITS.message}
                       required
                       rows={4}
                       value={formData.message}
@@ -426,7 +452,7 @@ export default function Contact() {
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
-                </div>
+                </fieldset>
               </form>
             </motion.div>
           </div>

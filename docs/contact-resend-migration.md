@@ -1,0 +1,58 @@
+# Rachal Law: staged Resend + private intake review
+
+Base: `burchdad/keisha-law` at `253518c905a5b749ff45e520147dc5fdabea8ecf`.
+Prepared October 13, 2026 for isolated draft review. No real submission, email, private-store write, credential configuration, or production deployment is included.
+
+**Formspree stays active by default.** Only an explicit build with `NEXT_PUBLIC_CONTACT_PROVIDER=resend` switches the browser to the new endpoint. The Resend API also fails closed unless the server, dedicated storage and retention gates are complete. Publication is limited to an isolated review branch/preview; production cutover requires the separate release checks below.
+
+## Changes
+
+- `/contact` retains the original five fields, choices, labels and original Formspree endpoint/payload by default. The legacy payload does not receive the new submission UUID or honeypot. The enabled migration uses same-origin `/api/contact`.
+- Browser protections include required fields, maximum lengths, disabled in-flight fields, a synchronous repeated-click guard, accessible live feedback/focus and a hidden honeypot. Failure keeps entries; unchanged retries retain the submission ID. Form state is never stored in localStorage. Editing or reloading starts a new attempt.
+- The Node API validates an exact allowlist, types, enum, bounded UTF-8 JSON stream, field lengths, email syntax and control characters. Visitor-supplied subjects, routing, CC/BCC, attachments and extra keys are rejected. Exact Origin and Fetch Metadata checks are additional defenses, not authentication.
+- Shared atomic Redis limits allow 5 attempts per visitor and 100 per site per 10-minute window, anchored to the first attempt. Only HMAC(IP) identifiers and counters are sent to Redis, with a 10-minute TTL. This is not an in-memory serverless limiter. Wrong/missing trusted ingress or limiter failure closes the route.
+- Vercel Blob saves the complete normalized inquiry before any email attempt. The private record has a deterministic UUID pathname, HMAC integrity fingerprint, creation/retention metadata and a durable pending/sent notification state. The exact minimal notification snapshot is retained to make provider retries byte-stable across future template edits. No raw IP, user agent, honeypot, credential, provider error body or third-party tracking data is retained.
+- Blob uses an explicit dedicated store ID and short-lived project OIDC. It has no static token fallback and no public upload/read endpoint. A non-PII site/project/environment/retention ownership manifest is verified with a fresh private read before any inquiry write. The SDK private-access mode also rejects a public store. No existing demo-admin authentication is reused.
+- Creation prohibits overwrites; concurrent/ambiguous saves are reconciled with a fresh read. A reused ID with different contents conflicts. Pending-to-sent uses ETag/ifMatch so a competing write cannot regress state. Provider acceptance followed by a failed status write remains pending and can be reconciled using the same idempotency key. A sent duplicate produces no new email.
+- Resend receives spacious navy/gold/ivory HTML plus plain text, containing a submission reference and contact details. The legal narrative and practice area are excluded from both notification parts. Full details stay in private storage. Reply-To is the validated visitor email; sender and one recipient come only from approved server configuration. No visitor autoreply or tracking pixel is added.
+- Here, notification state `sent` means Resend acknowledged acceptance, not proven mailbox delivery. Provider failure leaves a durable pending outbox record. The browser is told that the inquiry was saved but office notification could not be confirmed, and to call. No provider response or inquiry content is logged or exposed.
+- Unchanged retries use the original saved notification and key. Automatic resend attempts stop after 23 hours, before Resend's 24-hour idempotency expiry. Stale/ambiguous pending records, and records with an expired or invalid retention cutoff, are never automatically sent and require authorized operator reconciliation. A routing change cannot silently redirect a queued notification to a new recipient. There is no new public retry endpoint, cron job, or insecure admin inbox.
+- Individual network/stream operations have 4–5-second limits, the route budget is 60 seconds and the browser wait is capped at 55 seconds. No new background service or scheduler was provisioned.
+
+## Configuration and release gates
+
+1. Approve the exact Resend account, verified sender domain/address and destination mailbox. The public site email is not proof of actual intake routing. Review provider privacy/retention terms and any attorney-approved vendor disclosure changes. Existing policy text is untouched. Complete separate approval for any credential/DNS/access setup and the scoped synthetic delivery test.
+2. Use separate preview and production credentials/recipients. Set `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL` and exact HTTPS `CONTACT_SITE_ORIGIN` with no trailing slash. Sender/recipient each accept one bare email; the server adds the firm display name. There are no fallback inboxes. Never set `NEXT_PUBLIC_*` secrets.
+3. Approve and configure a dedicated Upstash store/connection for rate limiting: `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, and independent random `CONTACT_RATE_LIMIT_SECRET` of at least 32 characters. Keep that HMAC secret stable while outbox records remain live; rotation requires a planned record migration/recovery procedure. Confirm EVAL/TTL behavior and non-spoofable Vercel ingress. The implementation uses only `x-vercel-forwarded-for` and actual `VERCEL=1`; other hosts/proxy paths need a reviewed adapter. A global spam budget can be exhausted, so assess edge/WAF protection and thresholds.
+4. Approve a **dedicated private Vercel Blob store for Rachal alone and for each deployment environment separately**. Do not share Haven's or any other client's store. Authorize its project-scoped OIDC connection only to the intended Rachal project/environment. Set `CONTACT_BLOB_STORE_ID` to the exact `BLOB_STORE_ID` and `CONTACT_BLOB_PROJECT_ID` to the actual `VERCEL_PROJECT_ID`. The runtime supplies `VERCEL_ENV` and `VERCEL_OIDC_TOKEN`; this code does not create or configure tokens, grants, stores, or permissions.
+5. An authorized operator must create `rachal-intake/ownership.json` in that dedicated private store before intake can run. It must be JSON containing exactly the reviewed values for: `schema: 1`, `siteId: "rachal-law-firm-apc"`, `storeId`, `projectId`, `environment` (`preview` or `production`), `origin`, `access: "private"`, `dedicated: true`, `retentionPolicyId`, and numeric `retentionDays`. A different client, project, environment, origin or policy fails before PII upload. The endpoint cannot create its own ownership proof.
+6. The firm must explicitly approve its retention policy identifier and duration. Set `CONTACT_RETENTION_POLICY_ID` and `CONTACT_RETENTION_DAYS` (no defaults). Records contain `retentionDueAt`; **they are not automatically deleted**. Review access, legal holds, retention review/purge, monitoring of pending records, and operational ownership. Set `CONTACT_RETENTION_WORKFLOW_CONFIRMED=true` only after that workflow really exists. This is a release gate, not a claim that an environment flag enforces legal retention. Deletion is a separate authorized action.
+7. Establish a real authorized private review/recovery workflow. The existing `/admin/contact-submissions` page is demo data and has no access to these records. This patch adds no reader using the demo admin auth and no public/signed Blob links. Notification emails identify records by UUID; the approved operator must be able to review them and reconcile pending notifications, especially those older than 23 hours. Do not activate intake while records could go unread. Review platform/APM/log settings to ensure bodies and credentials are not captured.
+8. Preserve Formspree history, spam handling and operational continuity. Its hosted archive/retention has not been inspected or exported. This patch preserves the live form by default but does not migrate existing hosted history. Decide its export/retention disposition before any account/settings removal.
+9. Run the tests and build on the actual checkout. Deploy a review preview only after authorization. `public/review/contact-email.html` is a noindex synthetic design sample with reserved-domain contact information and no case narrative. Viewing it does not submit an inquiry. Real email-client rendering, approved private-store isolation/access, browser behavior and inbox receipt must still be tested with separately approved synthetic content/recipients.
+10. Only after storage, recovery, retention, routing, spam controls and scoped delivery tests pass: enable `CONTACT_STORAGE_ENABLED=true`, `CONTACT_FORM_ENABLED=true`, and build the authorized environment with `NEXT_PUBLIC_CONTACT_PROVIDER=resend`. Verify the exact deployed commit, durable save, HTML/plain-text arrival and Reply-To. Keep the prior Formspree deployment ready for rollback until verified. No production cutover is implied by a draft PR or passing mocks.
+
+## Verification commands
+
+`npm ci`; `npm run test:contact`; `npm run lint`; `npx tsc --noEmit`; `npm run build`.
+
+Local verification: 32 mock tests, lint, TypeScript, production build, whitespace checks and client-bundle secret-identifier checks passed. Executor-local Chromium launch was blocked by a socket restriction, so browser/mobile rendering and interaction checks are not claimed. Actual inbox delivery, private storage behavior and outbox recovery have not been end-to-end tested.
+
+The mock suite requires Node 22.18+ for TypeScript stripping. Runtime uses the supported Node version for Next 16.2.9. The only added runtime package is pinned `@vercel/blob@2.8.1`. All provider and Blob operations in tests are mocks with synthetic reserved-domain data. Mocked test retention settings are not a recommendation or adopted client policy.
+
+To regenerate the static notification sample without sending anything: `node --experimental-strip-types scripts/render-contact-preview.mjs`.
+
+## Rollback
+
+With authorization, restore `NEXT_PUBLIC_CONTACT_PROVIDER=formspree` and rebuild/redeploy, revert the patch, or restore the verified prior deployment at the pinned base. Setting only `CONTACT_FORM_ENABLED=false` stops the Resend API and does not redirect an already-built browser client. Retain private pending records for authorized recovery and retention handling; do not delete Formspree history or private intake data as part of a technical rollback.
+
+## Sources checked October 13, 2026
+
+- Pinned form: https://github.com/burchdad/keisha-law/blob/253518c905a5b749ff45e520147dc5fdabea8ecf/app/contact/page.tsx
+- Pinned demo inbox: https://github.com/burchdad/keisha-law/blob/253518c905a5b749ff45e520147dc5fdabea8ecf/app/admin/contact-submissions/page.tsx
+- Resend send endpoint and idempotency: https://resend.com/docs/api-reference/emails/send-email
+- Resend key retention: https://resend.com/docs/dashboard/emails/idempotency-keys
+- Vercel ingress: https://vercel.com/docs/headers/request-headers#x-vercel-forwarded-for
+- Blob SDK private access, explicit OIDC/storeId, uncached reads and ETag conditional writes: https://vercel.com/docs/vercel-blob/using-blob-sdk
+- Upstash command transport: https://upstash.com/docs/redis/features/restapi
+- Installed Next 16.2.9 Route Handler guides and Blob 2.8.1 types were inspected.
