@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useEditableSiteContent } from '../../lib/editableSiteContent';
 
 export default function Contact() {
@@ -17,6 +17,22 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const feedbackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!submitSuccess && !submitError) return;
+
+    const feedback = feedbackRef.current;
+    if (!feedback) return;
+
+    feedback.focus({ preventScroll: true });
+    feedback.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'instant'
+        : 'smooth',
+      block: 'center',
+    });
+  }, [submitSuccess, submitError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,11 +63,6 @@ export default function Contact() {
           phone: '',
           practiceArea: '',
           message: '',
-        });
-
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
         });
       } else {
         setSubmitError(
@@ -287,7 +298,14 @@ export default function Contact() {
                 onSubmit={handleSubmit}
                 className="bg-warm-ivory rounded-lg p-8 shadow-lg"
               >
-                <div className="space-y-6">
+                <div
+                  ref={feedbackRef}
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  tabIndex={-1}
+                  className={`scroll-mt-28 focus:outline-none ${submitSuccess || submitError ? 'mb-6' : ''}`}
+                >
                   {submitSuccess && (
                     <div className="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-md">
                       Your message has been sent successfully. Our office will
@@ -300,7 +318,9 @@ export default function Contact() {
                       {submitError}
                     </div>
                   )}
+                </div>
 
+                <div className="space-y-6">
                   <input
                     type="hidden"
                     name="_subject"
